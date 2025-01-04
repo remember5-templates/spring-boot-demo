@@ -31,3 +31,6 @@ log
 
 ### VS Code ###
 .vscode/
+
+### Spring ###
+*/.env

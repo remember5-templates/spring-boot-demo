@@ -1,0 +1,23 @@
+server:
+  # 端口
+  port: 8081
+
+---
+# spring 配置
+spring:
+  application:
+    name: demo-aio
+  profiles:
+    active: @profiles.active@
+
+---
+# mybatis plus
+mybatis-plus:
+  configuration:
+    # MyBatis 配置
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.remember5.aio.domain
+  global-config:
+    db-config:
+      id-type: auto
