@@ -3,6 +3,7 @@ package com.remember5.office.service.impl;
 import com.remember5.office.config.PDFExportConfig;
 import com.remember5.office.service.CommonService;
 import com.remember5.office.utils.PDFUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,10 @@ import java.util.Map;
  * @date 2021/12/3
  */
 @Service("commonService")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class CommonServiceImpl implements CommonService {
 
-    @Autowired
-    private PDFExportConfig pdfExportConfig;
+    private final PDFExportConfig pdfExportConfig;
 
     /**
      * PDF 文件导出
@@ -33,9 +34,7 @@ public class CommonServiceImpl implements CommonService {
     public ResponseEntity<?> export() {
         HttpHeaders headers = new HttpHeaders();
 
-        /**
-         * 数据导出(PDF 格式)
-         */
+        // 数据导出(PDF 格式)
         Map<String, Object> dataMap = new HashMap<>(16);
         dataMap.put("statisticalTime",new Date().toString());
         dataMap.put("imageUrl","http://118.25.95.207:9000/ahtc/2021-08-10/4dba6307-fde7-4c62-b825-ff921c932464.png");

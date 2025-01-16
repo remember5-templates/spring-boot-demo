@@ -1,6 +1,7 @@
 package com.remember5.office.controller;
 
 import com.remember5.office.service.CommonService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("pdf")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class CommonController {
 
-    @Autowired
-    private CommonService commonService;
+    private final CommonService commonService;
 
     /**
      * PDF 文件导出
