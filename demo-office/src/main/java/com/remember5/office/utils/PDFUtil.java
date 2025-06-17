@@ -4,8 +4,8 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.spire.pdf.FileFormat;
-import com.spire.pdf.PdfDocument;
+//import com.spire.pdf.FileFormat;
+//import com.spire.pdf.PdfDocument;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -120,20 +120,20 @@ public class PDFUtil {
      * @param docPath /
      * @throws Exception /
      */
-    public static void pdf2word(String pdfPath, String docPath) {
-        //创建一个 PdfDocument 对象
-        PdfDocument doc = new PdfDocument();
-
-        //加载 PDF 文件
-        doc.loadFromFile(pdfPath);
-
-        //将PDF转换为Doc格式文件并保存
-//        doc.saveToFile(docPath, FileFormat.DOC);
-
-        //将PDF转换为Docx格式文件并保存
-        doc.saveToFile(docPath, FileFormat.DOCX);
-        doc.close();
-    }
+//    public static void pdf2word(String pdfPath, String docPath) {
+//        //创建一个 PdfDocument 对象
+//        PdfDocument doc = new PdfDocument();
+//
+//        //加载 PDF 文件
+//        doc.loadFromFile(pdfPath);
+//
+//        //将PDF转换为Doc格式文件并保存
+////        doc.saveToFile(docPath, FileFormat.DOC);
+//
+//        //将PDF转换为Docx格式文件并保存
+//        doc.saveToFile(docPath, FileFormat.DOCX);
+//        doc.close();
+//    }
 
 
     public static void generatePdf2Image() {

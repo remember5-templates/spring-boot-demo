@@ -17,6 +17,7 @@ package com.remember5.office.itext;
 
 import cn.hutool.core.io.IoUtil;
 import com.remember5.office.config.PDFExportConfig;
+import com.remember5.office.utils.DocToPdfConverter;
 import com.remember5.office.utils.PDFUtil;
 import com.remember5.office.utils.ResourceFileUtil;
 import org.junit.jupiter.api.Test;
@@ -88,12 +89,21 @@ public class Html2PdfTest {
         Resource resource = new ClassPathResource(pdfExportConfig.getFontSimsun());
         byte[] fileBytes = IoUtil.readBytes(resource.getInputStream());
         PDFUtil.createPDF(htmlStr, fileBytes, pdfpath);
-        PDFUtil.pdf2word(pdfpath, docpath);
+//        PDFUtil.pdf2word(pdfpath, docpath);
 //        PDFUtil.createPDF(htmlStr, ResourceFileUtil.getAbsolutePath(pdfExportConfig.getFontSimsun()));
 //        if (pdfBytes != null && pdfBytes.length > 0) {
 //            final File file = FileUtil.writeBytes(pdfBytes, );
 //        }
     }
+
+    @Test
+    public void docs2Pdf() {
+        String docFilePath = "/Users/wangjiahao/Downloads/templates.docx";
+        String pdfFilePath = "/Users/wangjiahao/Downloads/templates.pdf";
+        DocToPdfConverter.word2pdf(docFilePath,pdfFilePath);
+
+    }
+
 
 
 
