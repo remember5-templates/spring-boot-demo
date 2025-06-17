@@ -76,11 +76,11 @@ public class WordUtils {
         options.fontProvider((familyName, encoding, size, style, color) -> {
             try {
                 // 使用iTextAsian.jar中的字体 需要引入itext-asian
-                BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+//                BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
                 // 使用资源字体(ClassPath)
                 // BaseFont bfChinese = BaseFont.createFont("/SIMYOU.TTF", BaseFont.IDENTITY_H,BaseFont.NOT_EMBEDDED);
                 // 使用其他的字体
-                // BaseFont bfChinese = BaseFont.createFont("/Users/wangjiahao/Downloads/simfang.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+                 BaseFont bfChinese = BaseFont.createFont("/Users/wangjiahao/Downloads/SimSun.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
                 Font fontChinese = new Font(bfChinese, size, style, color);
                 if (familyName != null) {
                     fontChinese.setFamily(familyName);
