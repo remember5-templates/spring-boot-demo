@@ -18,6 +18,7 @@
         <module>springboot2-es6</module>
         <module>springboot2-es7</module>
         <module>springboot3-es7</module>
+        <module>springboot3-es8</module>
     </modules>
 
 </project>

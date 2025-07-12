@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: springboot3-es8
+
+  elasticsearch:
+    uris: http://localhost:9200
+    connection-timeout: 10s
+    socket-timeout: 30s
+    username:
+    password:
