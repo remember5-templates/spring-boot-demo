@@ -1,7 +1,7 @@
 package com.remember5.es.es7.es;
 
-import com.remember5.demo.springboot3.es7.DemoSpringboot3Es7Application;
-import com.remember5.demo.springboot3.es7.entity.EsBusinessInfo;
+import com.remember5.es.es7.Springboot3Es7Application;
+import com.remember5.es.es7.entity.EsBusinessInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -26,7 +26,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
  */
 @Slf4j
 @DisplayName("聚合功能测试")
-@SpringBootTest(classes = DemoSpringboot3Es7Application.class)
+@SpringBootTest(classes = Springboot3Es7Application.class)
 @Tag("aggregation")
 @Tag("pipeline")
 class PipelineAggregationTests {
