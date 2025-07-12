@@ -24,8 +24,10 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.convert.ElasticsearchConverter;
 import org.springframework.data.elasticsearch.core.convert.MappingElasticsearchConverter;
@@ -48,6 +50,8 @@ public class ElasticsearchConfig {
     private String password;
 
     @Bean
+    @Primary
+    @ConditionalOnMissingBean
     public RestHighLevelClient elasticsearchClient() {
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,
@@ -61,11 +65,17 @@ public class ElasticsearchConfig {
     }
 
     @Bean
+    @Primary
+    @ConditionalOnMissingBean
     public ElasticsearchConverter elasticsearchConverter() {
         return new MappingElasticsearchConverter(new SimpleElasticsearchMappingContext());
     }
 
+
+
     @Bean
+    @Primary
+    @ConditionalOnMissingBean
     public ElasticsearchRestTemplate elasticsearchRestTemplate(RestHighLevelClient client, ElasticsearchConverter converter) {
         return new ElasticsearchRestTemplate(client, converter);
     }

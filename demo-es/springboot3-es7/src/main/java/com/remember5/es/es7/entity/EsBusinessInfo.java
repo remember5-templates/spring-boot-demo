@@ -307,7 +307,7 @@ public class EsBusinessInfo implements Serializable {
     /**
      * 标签详情（嵌套类型）
      */
-    @Field(type = FieldType.Nested)
+    @Field(type = FieldType.Flattened)
     private List<TagInfo> tagsDetail;
 
     /**
@@ -362,11 +362,9 @@ public class EsBusinessInfo implements Serializable {
      * 嵌套标签信息
      */
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
     @Builder
     @ToString
-    public static class TagInfo implements Serializable{
+    public static class TagInfo {
 
         @Field(type = FieldType.Keyword)
         private String tag;

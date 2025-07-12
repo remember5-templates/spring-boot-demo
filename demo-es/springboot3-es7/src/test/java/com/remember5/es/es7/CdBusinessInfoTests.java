@@ -44,7 +44,7 @@ import java.util.List;
 @DisplayName("测试es")
 @SpringBootTest(classes = Springboot3Es7Application.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class BusinessInfoTests {
+class CdBusinessInfoTests {
 
     @Autowired
     private ElasticsearchRestTemplate template;

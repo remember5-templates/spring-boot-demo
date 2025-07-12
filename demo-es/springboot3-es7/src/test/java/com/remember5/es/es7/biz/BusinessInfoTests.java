@@ -35,7 +35,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -65,13 +64,18 @@ class BusinessInfoTests {
     @DisplayName("创建索引")
     @Order(0)
     void createIndex() {
-        IndexOperations indexOperations = template.indexOps(EsBusinessInfo.class);
-        if (!indexOperations.exists()) {
-            log.info("创建索引");
-            indexOperations.create();
-            final boolean b = indexOperations.createWithMapping();
-            Assertions.assertTrue(b);
+
+        if (template.indexOps(EsBusinessInfo.class).exists()) {
+            log.info("删除已存在的索引");
+            template.indexOps(EsBusinessInfo.class).delete();
         }
+        log.info("创建索引");
+
+//        final boolean withMapping = template.indexOps(EsBusinessInfo.class).createWithMapping();
+        final boolean withMapping = template.indexOps(EsBusinessInfo.class).create();
+        Assertions.assertTrue(withMapping);
+        template.indexOps(EsBusinessInfo.class).putMapping();
+
     }
 
     @Test
