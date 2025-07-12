@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: demo-springboot3-es7
+
+  elasticsearch:
+    rest:
+      uris: http://127.0.0.1:9200
+      username: elastic
+      password:

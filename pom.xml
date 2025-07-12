@@ -22,7 +22,7 @@
 
     <modules>
 <!--        <module>demo-admin</module>-->
-        <module>demo-aio</module>
+<!--        <module>demo-aio</module>-->
         <module>demo-common</module>
 <!--        <module>demo-design-pattern</module>-->
 <!--        <module>demo-dynamic-datasource</module>-->
@@ -32,7 +32,7 @@
 <!--        <module>demo-encrypt</module>-->
 <!--        <module>demo-flowable</module>-->
 <!--        <module>demo-interview</module>-->
-        <module>demo-junit</module>
+<!--        <module>demo-junit</module>-->
 <!--        <module>demo-jwt</module>-->
 <!--        <module>demo-liquibase</module>-->
 <!--        <module>demo-minio</module>-->
@@ -41,7 +41,7 @@
 <!--        <module>demo-mybatis-plus</module>-->
 <!--        <module>demo-nacos</module>-->
 <!--        <module>demo-oauth2</module>-->
-        <module>demo-office</module>
+<!--        <module>demo-office</module>-->
 <!--        <module>demo-package</module>-->
 <!--        <module>demo-quartz</module>-->
 <!--        <module>demo-rabbitmq</module>-->
@@ -51,6 +51,7 @@
 <!--        <module>demo-sentinel</module>-->
 <!--        <module>demo-skywalking</module>-->
 <!--        <module>demo-spi</module>-->
+            <module>demo-springboot3-es7</module>
 <!--        <module>demo-swagger</module>-->
 <!--        <module>demo-validation</module>-->
 <!--        <module>demo-web</module>-->
@@ -64,7 +65,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!--   跳过测试    -->
-        <skipTests>true</skipTests>
+<!--        <skipTests>true</skipTests>-->
 
         <!--plugins-->
         <hutool.version>5.8.28</hutool.version>
@@ -77,6 +78,7 @@
         <mapstruct.version>1.4.1.Final</mapstruct.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -143,6 +145,28 @@
         <!--   插件声明，有些包不需要打jar，所以只是声明     -->
         <pluginManagement>
             <plugins>
+                <!-- Maven编译插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+
+                <!-- Maven测试插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <skipTests>${skipTests}</skipTests>
+                    </configuration>
+                </plugin>
+
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>

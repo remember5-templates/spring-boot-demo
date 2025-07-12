@@ -1,8 +1,9 @@
 HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+log
 
 ### STS ###
 .apt_generated
@@ -12,7 +13,6 @@ target/
 .settings
 .springBeans
 .sts4-cache
-.DS_Store
 
 ### IntelliJ IDEA ###
 .idea
@@ -27,10 +27,11 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
-log
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
 
-### Spring ###
-*/.env
+### MacOS ###
+.DS_Store
