@@ -5,10 +5,10 @@ spring:
   application:
     name: demo-rabbitmq-demo1
   rabbitmq:
-    host: 47.97.57.206
-    port: 5672
-    username: ryf # RabbitMQ 服务的账号
-    password: zKkbn8c7wuc7iCiT
+    host:
+    port:
+    username: # RabbitMQ 服务的账号
+    password:
     # RabbitMQ 服务的密码
     virtual-host: ryf
 #    listener: # 手动提交消息
