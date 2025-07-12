@@ -22,7 +22,7 @@
 
     <modules>
 <!--        <module>demo-admin</module>-->
-<!--        <module>demo-aio</module>-->
+        <module>demo-aio</module>
         <module>demo-common</module>
 <!--        <module>demo-design-pattern</module>-->
 <!--        <module>demo-dynamic-datasource</module>-->
@@ -32,7 +32,7 @@
 <!--        <module>demo-encrypt</module>-->
 <!--        <module>demo-flowable</module>-->
 <!--        <module>demo-interview</module>-->
-<!--        <module>demo-junit</module>-->
+        <module>demo-junit</module>
 <!--        <module>demo-jwt</module>-->
 <!--        <module>demo-liquibase</module>-->
 <!--        <module>demo-minio</module>-->
@@ -41,7 +41,7 @@
 <!--        <module>demo-mybatis-plus</module>-->
 <!--        <module>demo-nacos</module>-->
 <!--        <module>demo-oauth2</module>-->
-<!--        <module>demo-office</module>-->
+        <module>demo-office</module>
 <!--        <module>demo-package</module>-->
 <!--        <module>demo-quartz</module>-->
 <!--        <module>demo-rabbitmq</module>-->
@@ -60,11 +60,6 @@
 
 
     <properties>
-        <java.version>17</java.version>
-        <!--   默认jdk版本     -->
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -81,9 +76,7 @@
         <lombok.version>1.18.22</lombok.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
 
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <spring.boot.version>2.5.15</spring.boot.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -147,25 +140,12 @@
 
     <!--  打包相关  -->
     <build>
-        <plugins>
-            <!--     maven编译插件       -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
         <!--   插件声明，有些包不需要打jar，所以只是声明     -->
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring.boot.version}</version>
                     <executions>
                         <execution>
                             <goals>
