@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: demo-flyway
+  datasource:
+    url: jdbc:sqlite:./sqlite/flyway.db
+    driver-class-name: org.sqlite.JDBC
+    username:
+    password:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration

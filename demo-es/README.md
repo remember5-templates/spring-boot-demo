@@ -3,6 +3,26 @@
 ES <= 7.10.1 是免费使用的，后续版本需要授权后使用
 
 
+# Install ES
+
+Reqirements: 
+- Docker >= 20.10
+- Docker Compose >= 1.29
+
+```yaml
+services:
+  elasticsearch:
+    image: docker.io/bitnami/elasticsearch:8:18.0
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    volumes:
+      - 'elasticsearch_data:/bitnami/elasticsearch/data'
+volumes:
+  elasticsearch_data:
+    driver: local
+```
+
 # GUI
 https://elasticvue.com/
 
