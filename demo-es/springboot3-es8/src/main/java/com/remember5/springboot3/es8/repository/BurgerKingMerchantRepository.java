@@ -17,12 +17,11 @@ package com.remember5.springboot3.es8.repository;
 
 import com.remember5.springboot3.es8.entity.BurgerKingMerchant;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author wangjiahao
  * @date 2025/7/13 00:13
  */
-@Repository
+//@Repository
 public interface BurgerKingMerchantRepository extends ElasticsearchRepository<BurgerKingMerchant, Integer> {
 }

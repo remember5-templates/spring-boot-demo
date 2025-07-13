@@ -17,11 +17,12 @@ package com.remember5.springboot3.es8.util;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -77,23 +78,19 @@ public class EnhancedCsvLoader {
      */
     public static <T> List<T> loadCsvData(String filePath, Class<T> type) {
         try (Reader reader = new FileReader(filePath)) {
-            // 1. 基础CSV解析
-            HeaderColumnNameMappingStrategy<T> strategy = new HeaderColumnNameMappingStrategy<>();
-            strategy.setType(type);
-
             CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
-                    .withMappingStrategy(strategy)
+                    .withType(type)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
-
-            List<T> result = csvToBean.parse();
-
-            // 2. 应用自定义转换和拼接
-            return processEntities(result, type);
-        } catch (Exception e) {
+            return csvToBean.parse();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("CSV加载失败: " + filePath, e);
+        } catch (IOException e) {
             throw new RuntimeException("CSV加载失败: " + filePath, e);
         }
     }
+
+
 
     private static <T> List<T> processEntities(List<T> entities, Class<T> type) {
         List<T> processed = new ArrayList<>();
