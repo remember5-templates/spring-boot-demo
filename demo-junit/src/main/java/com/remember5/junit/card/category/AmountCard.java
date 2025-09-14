@@ -36,25 +36,25 @@ import java.math.RoundingMode;
 public class AmountCard extends BaseCard {
 
     public AmountCard(String orderAmount, String arrivalAmount, String reservePrecent) {
+        // 卡的基本信息
         setOrderAmount(new BigDecimal(orderAmount));
         setArrivalAmount(new BigDecimal(arrivalAmount));
         setReservePrecent(new BigDecimal(reservePrecent));
-    }
 
-    /**
-     * 本次划拨金额
-     */
-    private BigDecimal currentTransferAmount;
-
-    @Override
-    public void calculateCardInfo() {
+        // 计算
         setCardReserveAmount(getOrderAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.DOWN));
         setCardAvailableAmount(getArrivalAmount().subtract(getCardReserveAmount()));
         setCumulativeTransferAmount(BigDecimal.ZERO);
         setCurrentReserveAmount(getCardReserveAmount());
         setCurrentAvailableAmount(getCardAvailableAmount());
         setCurrentCount(0);
+        setTotalCount(0);
     }
+
+    /**
+     * 本次划拨金额
+     */
+    private BigDecimal currentTransferAmount;
 
     @Override
     public void printCardInfo() {

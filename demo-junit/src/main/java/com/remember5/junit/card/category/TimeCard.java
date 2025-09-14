@@ -40,12 +40,22 @@ import java.util.Date;
 public class TimeCard extends BaseCard {
 
     public TimeCard(String orderAmount, String arrivalAmount, String reservePrecent, Integer totalCount, Date startTime) {
+        // 卡的基本信息
         setOrderAmount(new BigDecimal(orderAmount));
         setArrivalAmount(new BigDecimal(arrivalAmount));
         setReservePrecent(new BigDecimal(reservePrecent));
         setTotalCount(totalCount);
         setStartTime(startTime);
         setEndTime(DateUtils.addDays(startTime, totalCount));
+
+        // 计算
+        setCardReserveAmount(getOrderAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.DOWN));
+        setCardAvailableAmount(getArrivalAmount().subtract(getCardReserveAmount()));
+        setEachAmount(getOrderAmount().divide(new BigDecimal(getTotalCount()), 2, RoundingMode.DOWN));
+        setCumulativeTransferAmount(BigDecimal.ZERO);
+        setCurrentReserveAmount(getCardReserveAmount());
+        setCurrentAvailableAmount(getCardAvailableAmount());
+        setCurrentCount(0);
     }
 
     /**
@@ -58,16 +68,6 @@ public class TimeCard extends BaseCard {
      */
     private Date endTime;
 
-    @Override
-    public void calculateCardInfo() {
-        setCardReserveAmount(getOrderAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.DOWN));
-        setCardAvailableAmount(getArrivalAmount().subtract(getCardReserveAmount()));
-        setEachAmount(getOrderAmount().divide(new BigDecimal(getTotalCount()), 2, RoundingMode.DOWN));
-        setCumulativeTransferAmount(BigDecimal.ZERO);
-        setCurrentReserveAmount(getCardReserveAmount());
-        setCurrentAvailableAmount(getCardAvailableAmount());
-        setCurrentCount(0);
-    }
 
     @Override
     public void printCardInfo() {

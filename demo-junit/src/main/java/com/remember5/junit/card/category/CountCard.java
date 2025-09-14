@@ -24,20 +24,13 @@ public class CountCard extends BaseCard {
 
 
     public CountCard(String orderAmount, String arrivalAmount, Integer totalCount, String reservePrecent) {
+        // 卡的基本信息
         setOrderAmount(new BigDecimal(orderAmount));
         setArrivalAmount(new BigDecimal(arrivalAmount));
         setReservePrecent(new BigDecimal(reservePrecent));
         setTotalCount(totalCount);
-    }
 
-    /**
-     * 剩余次数
-     */
-    @Deprecated
-    private Integer remainingCount;
-
-    @Override
-    public void calculateCardInfo() {
+        // 计算
         setCardReserveAmount(getOrderAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.DOWN));
         setCardAvailableAmount(getArrivalAmount().subtract(getCardReserveAmount()));
         setEachAmount(getOrderAmount().divide(new BigDecimal(getTotalCount()), 2, RoundingMode.DOWN));
@@ -46,6 +39,12 @@ public class CountCard extends BaseCard {
         setCurrentAvailableAmount(getCardAvailableAmount());
         setCurrentCount(0);
     }
+
+    /**
+     * 剩余次数
+     */
+    @Deprecated
+    private Integer remainingCount;
 
     @Override
     public void printCardInfo() {
