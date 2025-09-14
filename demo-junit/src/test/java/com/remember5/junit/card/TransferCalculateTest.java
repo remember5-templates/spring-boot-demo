@@ -66,9 +66,10 @@ class TransferCalculateTest {
         final List<String> list = Arrays.asList("4.31", "2.3", "4.3", "5.5", "0.1");
         // 进行多次计算
         for (int i = 1; i <= 5; i++) {
-            card.setCurrentTransferAmount(new BigDecimal(list.get(i - 1)));
+            final BigDecimal currentExpenseAmount = new BigDecimal(list.get(i - 1));
+            card.setCurrentExpenseAmount(currentExpenseAmount);
             BigDecimal transferAmount = TransferCalculate.amountCard(card);
-            log.info("当前核销次数: {}, 本次核销金额: {} , 本次划拨金额: {}, 当前留底资金: {} , 累计划拨金额(含可支用): {}", i, card.getEachAmount(), transferAmount, card.getCurrentReserveAmount(), card.getCumulativeTransferAmount());
+            log.info("当前核销次数: {}, 本次核销金额: {} , 本次划拨金额: {}, 当前留底资金: {} , 累计划拨金额(含可支用): {}", i, currentExpenseAmount, transferAmount, card.getCurrentReserveAmount(), card.getCumulativeTransferAmount());
         }
 
     }

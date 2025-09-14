@@ -52,9 +52,9 @@ public class AmountCard extends BaseCard {
     }
 
     /**
-     * 本次划拨金额
+     * 本次消费金额
      */
-    private BigDecimal currentTransferAmount;
+    private BigDecimal currentExpenseAmount;
 
     @Override
     public void printCardInfo() {

@@ -67,6 +67,15 @@ public class TransferCalculate {
         return calculate(card);
     }
 
+
+    /**
+     * 金额卡计算
+     * 重构后使用统一的计算逻辑，消除代码重复
+     */
+    public static BigDecimal amountCard(AmountCard card) {
+        return calculate(card);
+    }
+
     /**
      * 验证卡片对象的有效性
      */
@@ -113,7 +122,7 @@ public class TransferCalculate {
      */
     private static BigDecimal getEachAmount(BaseCard card) {
         if (card instanceof AmountCard) {
-            return ((AmountCard) card).getCurrentTransferAmount();
+            return ((AmountCard) card).getCurrentExpenseAmount();
         }
         return card.getEachAmount();
     }
@@ -175,14 +184,6 @@ public class TransferCalculate {
      */
     private static void updateCumulativeAmount(BaseCard card, BigDecimal transferAmount) {
         card.setCumulativeTransferAmount(card.getCumulativeTransferAmount().add(transferAmount));
-    }
-
-    /**
-     * 金额卡计算
-     * 重构后使用统一的计算逻辑，消除代码重复
-     */
-    public static BigDecimal amountCard(AmountCard card) {
-        return calculate(card);
     }
 
 
