@@ -73,14 +73,14 @@ public class TransferCalculate {
      * @param card 次卡信息
      */
     private static BigDecimal calculateTransfer(BaseCard card) {
-        // 如果是最后一次，就代表不能核销了
-        if (card.getCurrentCount().compareTo(card.getTotalCount()) == 0) {
-            System.err.println("[核销错误] 核销次数已经超过权益次数");
-            return BigDecimal.ZERO;
-        }
 
         if(card.getCurrentReserveAmount().compareTo(BigDecimal.ZERO) == 0) {
             System.err.println("[核销错误] 留底资金为0");
+            return BigDecimal.ZERO;
+        }
+        // 如果是最后一次，就代表不能核销了
+        if (card.getCurrentCount().compareTo(card.getTotalCount()) == 0) {
+            System.err.println("[核销错误] 核销次数已经超过权益次数");
             return BigDecimal.ZERO;
         }
 
@@ -108,7 +108,7 @@ public class TransferCalculate {
                 // 累计划拨 > 可支用资金，需要动用留底资金,(累计划拨-可支用=需要划拨的钱)
                 transferAmount = newCumulativeAmount.subtract(card.getCardAvailableAmount());
 
-                // 更新账户状态
+                // 更新留底资金
                 card.setCurrentReserveAmount(card.getCurrentReserveAmount().subtract(transferAmount));
                 // 更新累计划拨金额
                 card.setCumulativeTransferAmount(
@@ -127,7 +127,8 @@ public class TransferCalculate {
             // 划拨剩余所有的留底
             transferAmount = card.getCurrentReserveAmount();
             // 更新累计划拨金额
-            card.setCumulativeTransferAmount(card.getCumulativeTransferAmount().add(transferAmount));
+            card.setCumulativeTransferAmount(
+                    card.getCumulativeTransferAmount().add(transferAmount));
             // 更新当前留底资金
             card.setCurrentReserveAmount(
                     card.getCurrentReserveAmount().subtract(transferAmount)
@@ -156,6 +157,9 @@ public class TransferCalculate {
      * 金额卡计算
      */
     public static BigDecimal amountCard(AmountCard card) {
+        if(card.getCurrentReserveAmount().compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
         // 增加核销次数
         card.setCurrentCount(card.getCurrentCount() + 1);
         // 本次划拨金额
@@ -177,12 +181,11 @@ public class TransferCalculate {
             } else {
                 // 累计划拨 > 可支用资金，需要动用留底资金,(累计划拨-可支用=需要划拨的钱)
                 transferAmount = newCumulativeAmount.subtract(card.getCardAvailableAmount());
-
-                // 更新账户状态
+                // 更新留底资金
                 card.setCurrentReserveAmount(card.getCurrentReserveAmount().subtract(transferAmount));
                 // 更新累计划拨金额
                 card.setCumulativeTransferAmount(
-                        card.getCumulativeTransferAmount().add(transferAmount)
+                        card.getCumulativeTransferAmount().add(card.getCurrentTransferAmount())
                 );
             }
             return transferAmount;
@@ -192,8 +195,26 @@ public class TransferCalculate {
 
         // 如果当前留底 < 当次划拨
         if (card.getCurrentReserveAmount().compareTo(card.getCurrentTransferAmount()) < 0) {
+            // 划拨剩余所有的留底
             transferAmount = card.getCurrentReserveAmount();
+            // 更新累计划拨金额
+            card.setCumulativeTransferAmount(
+                    card.getCumulativeTransferAmount().add(transferAmount)
+            );
+            // 更新当前留底资金
+            card.setCurrentReserveAmount(
+                    card.getCurrentReserveAmount().subtract(transferAmount)
+            );
+            return transferAmount;
+        }
+
+        if (card.getCurrentReserveAmount().compareTo(transferAmount) >= 0) {
+            // 留底资金充足，正常划拨
             card.setCurrentReserveAmount(card.getCurrentReserveAmount().subtract(transferAmount));
+        } else {
+            // 留底资金不足（最后一次），划拨所有剩余留底资金
+            transferAmount = card.getCurrentReserveAmount();
+            card.setCurrentReserveAmount(BigDecimal.ZERO);
         }
         // 更新累计划拨金额
         card.setCumulativeTransferAmount(card.getCumulativeTransferAmount().add(transferAmount));
