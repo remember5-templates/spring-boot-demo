@@ -28,7 +28,7 @@ import java.math.BigDecimal;
  */
 @Data
 @NoArgsConstructor
-public class BaseCard {
+public abstract class BaseCard {
 
     /**
      * 订单金额(元)
@@ -69,5 +69,30 @@ public class BaseCard {
      * 累计划拨金额
      */
     private BigDecimal cumulativeTransferAmount;
+
+    /**
+     * 总次数/总天数
+     */
+    private Integer totalCount;
+
+    /**
+     * 每次的划拨金额
+     */
+    private BigDecimal eachAmount;
+
+    /**
+     * 当前核销次数/天数
+     */
+    private Integer currentCount;
+
+    /**
+     * 计算卡片信息的抽象方法，由子类实现具体逻辑
+     */
+    public abstract void calculateCardInfo();
+
+    /**
+     * 打印卡片信息的抽象方法，由子类实现具体逻辑
+     */
+    public abstract void printCardInfo();
 
 }

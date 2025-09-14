@@ -35,15 +35,28 @@ import java.math.RoundingMode;
 @EqualsAndHashCode(callSuper = true)
 public class AmountCard extends BaseCard {
 
+    public AmountCard(String orderAmount, String arrivalAmount, String reservePrecent) {
+        setOrderAmount(new BigDecimal(orderAmount));
+        setArrivalAmount(new BigDecimal(arrivalAmount));
+        setReservePrecent(new BigDecimal(reservePrecent));
+    }
 
+    /**
+     * 本次划拨金额
+     */
+    private BigDecimal currentTransferAmount;
+
+    @Override
     public void calculateCardInfo() {
         setCardReserveAmount(getOrderAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.DOWN));
         setCardAvailableAmount(getArrivalAmount().subtract(getCardReserveAmount()));
         setCumulativeTransferAmount(BigDecimal.ZERO);
         setCurrentReserveAmount(getCardReserveAmount());
         setCurrentAvailableAmount(getCardAvailableAmount());
+        setCurrentCount(0);
     }
 
+    @Override
     public void printCardInfo() {
         System.err.println("=====================");
         System.err.println("金额卡订单金额: " + getOrderAmount());

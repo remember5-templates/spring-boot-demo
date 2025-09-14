@@ -27,18 +27,8 @@ public class CountCard extends BaseCard {
         setOrderAmount(new BigDecimal(orderAmount));
         setArrivalAmount(new BigDecimal(arrivalAmount));
         setReservePrecent(new BigDecimal(reservePrecent));
-        this.totalCount = totalCount;
+        setTotalCount(totalCount);
     }
-
-    /**
-     * 总次数
-     */
-    private Integer totalCount;
-
-    /**
-     * 每次的划拨金额
-     */
-    private BigDecimal eachAmount;
 
     /**
      * 剩余次数
@@ -46,21 +36,18 @@ public class CountCard extends BaseCard {
     @Deprecated
     private Integer remainingCount;
 
-    /**
-     * 当前核销次数
-     */
-    private Integer currentCount;
-
+    @Override
     public void calculateCardInfo() {
         setCardReserveAmount(getOrderAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.DOWN));
         setCardAvailableAmount(getArrivalAmount().subtract(getCardReserveAmount()));
-        setEachAmount(getOrderAmount().divide(new BigDecimal(totalCount), 2, RoundingMode.DOWN));
+        setEachAmount(getOrderAmount().divide(new BigDecimal(getTotalCount()), 2, RoundingMode.DOWN));
         setCumulativeTransferAmount(BigDecimal.ZERO);
         setCurrentReserveAmount(getCardReserveAmount());
         setCurrentAvailableAmount(getCardAvailableAmount());
         setCurrentCount(0);
     }
 
+    @Override
     public void printCardInfo() {
         System.err.println("=====================");
         System.err.println("次卡订单金额: " + getOrderAmount());
@@ -68,8 +55,8 @@ public class CountCard extends BaseCard {
         System.err.println("次卡监管比例:" + getReservePrecent());
         System.err.println("次卡留底资金: " + getCardReserveAmount());
         System.err.println("次卡可支用资金: " + getCardAvailableAmount());
-        System.err.println("次卡总次数:" + totalCount);
-        System.err.println("每次核销金额: " + eachAmount);
+        System.err.println("次卡总次数:" + getTotalCount());
+        System.err.println("每次核销金额: " + getEachAmount());
         System.err.println("=====================");
     }
 
