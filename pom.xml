@@ -23,16 +23,16 @@
     <modules>
 <!--        <module>demo-admin</module>-->
 <!--        <module>demo-aio</module>-->
-<!--        <module>demo-common</module>-->
+        <module>demo-common</module>
 <!--        <module>demo-design-pattern</module>-->
 <!--        <module>demo-dynamic-datasource</module>-->
 <!--        <module>demo-email</module>-->
 <!--        <module>demo-encrypt</module>-->
 <!--        <module>demo-es</module>-->
 <!--        <module>demo-flowable</module>-->
-            <module>demo-flyway</module>
+<!--        <module>demo-flyway</module>-->
 <!--        <module>demo-interview</module>-->
-<!--        <module>demo-junit</module>-->
+        <module>demo-junit</module>
 <!--        <module>demo-jwt</module>-->
 <!--        <module>demo-liquibase</module>-->
 <!--        <module>demo-minio</module>-->

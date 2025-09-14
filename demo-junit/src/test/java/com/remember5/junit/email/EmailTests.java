@@ -15,18 +15,19 @@
  */
 package com.remember5.junit.email;
 
-import com.remember5.junit.SpringBootDemoJunitApplicationTests;
 import com.remember5.junit.email.client.impl.EmailClient;
 import com.remember5.junit.email.config.EmailProperties;
 import com.remember5.junit.email.service.EmailClientFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author wangjiahao
  * @date 2025/5/12 16:51
  */
-public class EmailTests extends SpringBootDemoJunitApplicationTests {
+@SpringBootTest
+class EmailTests{
 
     @Autowired
     EmailClientFactory clientFactory;
@@ -35,13 +36,10 @@ public class EmailTests extends SpringBootDemoJunitApplicationTests {
     EmailProperties emailProperties;
 
     @Test
-    public void testICBC() throws Exception {
+    void testICBC() throws Exception {
         final EmailProperties.ClientConfig icbcConfig = emailProperties.getIcbc();
         final EmailClient client = clientFactory.getClient(icbcConfig.getVendor(), icbcConfig);
-
         client.connect();
-
-
     }
 
 }

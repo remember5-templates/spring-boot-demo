@@ -15,8 +15,8 @@
  */
 package com.remember5.junit.config;
 
-import com.remember5.junit.entity.OrderStatusChangeEventEnum;
-import com.remember5.junit.entity.OrderStatusEnum;
+import com.remember5.junit.enums.OrderStatusChangeEventEnum;
+import com.remember5.junit.enums.OrderStatusEnum;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;

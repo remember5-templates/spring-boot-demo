@@ -15,6 +15,8 @@
  */
 package com.remember5.junit.entity;
 
+import com.remember5.junit.enums.OrderStatusEnum;
+
 /**
  * 模拟订单类
  *

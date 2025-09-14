@@ -6,37 +6,37 @@ spring:
 my-email:
   icbc:
     vendor: _163
-    user:
-    authCode:
+    user: ""
+    authCode: ""
     targetSenders:
       - "1332661444@qq.com"
   ccb:
     vendor: _126
-    user:
-    authCode:
+    user: ""
+    authCode: ""
     targetSenders:
       - "1332661444@qq.com"
   boc:
     vendor: _189
-    user:
-    authCode:
+    user: ""
+    authCode: ""
     targetSenders:
       - "1332661444@qq.com"
   psbc:
     vendor: _163
-    user:
-    authCode:
+    user: ""
+    authCode: ""
     targetSenders:
       - "1332661444@qq.com"
   bocd:
     vendor: _126
-    user:
-    authCode:
+    user: ""
+    authCode: ""
     targetSenders:
       - "1332661444@qq.com"
   cdrcb:
     vendor: SINA
-    user:
-    authCode:
+    user: ""
+    authCode: ""
     targetSenders:
       - "1332661444@qq.com"

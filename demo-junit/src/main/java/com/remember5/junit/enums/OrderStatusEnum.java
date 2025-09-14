@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.remember5.junit.entity;
+package com.remember5.junit.enums;
 
 /**
- * 订单状态转换行为
- *
+ * 订单状态
  * @author wangjiahao
  * @date 2025/6/16 14:51
  */
-public enum OrderStatusChangeEventEnum {
+public enum OrderStatusEnum {
 
-    //支付
-    PAYED,
-    //发货
-    DELIVERY,
-    //收货
-    RECEIVED;
+    // 待支付
+    WAIT_PAYMENT,
+    // 待发货
+    WAIT_DELIVER,
+    // 待收货
+    WAIT_RECEIVE,
+    // 完成
+    FINISH;
 }
