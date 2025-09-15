@@ -106,6 +106,9 @@ public class TransferCalculate {
             // 实际划拨金额 = 卡的实收 - 卡的已划拨
             BigDecimal actualTransferAmount = card.getArrivalAmount().subtract(card.getCumulativeTransferAmount());
 
+            if(actualTransferAmount.compareTo(card.getCardReserveAmount()) >= 0) {
+                actualTransferAmount = card.getCardReserveAmount();
+            }
             // 更新留底资金
             card.setCurrentReserveAmount(BigDecimal.ZERO);
             updateCumulativeAmount(card, actualTransferAmount);
