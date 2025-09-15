@@ -111,7 +111,7 @@ public class TransferCalculate {
 
         // 判断当前处于哪个阶段
         if (isInAvailableStage(card)) {
-            return calculateAvailableStage(card, eachAmount, isLastTransfer);
+            return calculateAvailableStage(card, eachAmount);
         } else {
             return calculateReserveStage(card, eachAmount, isLastTransfer);
         }
@@ -138,7 +138,7 @@ public class TransferCalculate {
      * 计算可支用阶段的划拨金额
      * 可支用阶段：留底资金未动用，优先使用可支用资金
      */
-    private static BigDecimal calculateAvailableStage(BaseCard card, BigDecimal eachAmount, boolean isLastTransfer) {
+    private static BigDecimal calculateAvailableStage(BaseCard card, BigDecimal eachAmount) {
         BigDecimal newCumulativeAmount = card.getCumulativeTransferAmount().add(eachAmount);
 
         if (newCumulativeAmount.compareTo(card.getCardAvailableAmount()) <= 0) {
@@ -148,6 +148,11 @@ public class TransferCalculate {
         } else {
             // 可支用资金不足，需要动用留底资金
             BigDecimal transferAmount = newCumulativeAmount.subtract(card.getCardAvailableAmount());
+            // 如果划拨金额大于卡的所有留底资金
+            if(transferAmount.compareTo(card.getCardReserveAmount()) >= 0) {
+                transferAmount = card.getCardReserveAmount();
+                eachAmount = card.getArrivalAmount().subtract(card.getCumulativeTransferAmount());
+            }
             card.setCurrentReserveAmount(card.getCurrentReserveAmount().subtract(transferAmount));
             updateCumulativeAmount(card, eachAmount);
             return transferAmount;

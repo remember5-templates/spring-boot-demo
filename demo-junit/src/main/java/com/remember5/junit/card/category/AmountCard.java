@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,6 +29,7 @@ import java.math.RoundingMode;
  * @author wangjiahao
  * @date 2025/9/14 01:04
  */
+@Slf4j
 @Getter
 @Setter
 @NoArgsConstructor
@@ -58,13 +60,13 @@ public class AmountCard extends BaseCard {
 
     @Override
     public void printCardInfo() {
-        System.err.println("=====================");
-        System.err.println("金额卡订单金额: " + getOrderAmount());
-        System.err.println("金额卡实际到账金额:" + getArrivalAmount());
-        System.err.println("金额卡监管比例:" + getReservePrecent());
-        System.err.println("金额卡留底资金: " + getCardReserveAmount());
-        System.err.println("金额卡可支用资金: " + getCardAvailableAmount());
-        System.err.println("=====================");
+        log.info("=====================");
+        log.info("金额卡订单金额: {} ", getOrderAmount());
+        log.info("金额卡实际到账金额: {}", getArrivalAmount());
+        log.info("金额卡监管比例: {}", getReservePrecent());
+        log.info("金额卡留底资金: {} ", getCardReserveAmount());
+        log.info("金额卡可支用资金: {} ", getCardAvailableAmount());
+        log.info("=====================");
     }
 
 

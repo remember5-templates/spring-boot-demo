@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.math.BigDecimal;
@@ -32,6 +33,7 @@ import java.util.Date;
  * @author wangjiahao
  * @date 2025/9/14 11:16
  */
+@Slf4j
 @Getter
 @Setter
 @NoArgsConstructor
@@ -71,17 +73,17 @@ public class TimeCard extends BaseCard {
 
     @Override
     public void printCardInfo() {
-        System.err.println("=====================");
-        System.err.println("时长卡订单金额: " + getOrderAmount());
-        System.err.println("时长卡实际到账金额:" + getArrivalAmount());
-        System.err.println("时长卡监管比例:" + getReservePrecent());
-        System.err.println("时长卡留底资金: " + getCardReserveAmount());
-        System.err.println("时长卡可支用资金: " + getCardAvailableAmount());
-        System.err.println("时长卡总时长:" + getTotalCount());
-        System.err.println("每次核销金额: " + getEachAmount());
-        System.err.println("时长卡生效期:" + startTime);
-        System.err.println("时长卡失效期:" + endTime);
-        System.err.println("=====================");
+        log.info("=====================");
+        log.info("时长卡订单金额: {}", getOrderAmount());
+        log.info("时长卡实际到账金额: {}", getArrivalAmount());
+        log.info("时长卡监管比例: {}", getReservePrecent());
+        log.info("时长卡留底资金: {}", getCardReserveAmount());
+        log.info("时长卡可支用资金: {}", getCardAvailableAmount());
+        log.info("时长卡总时长: {}", getTotalCount());
+        log.info("每次核销金额: {}", getEachAmount());
+        log.info("时长卡生效期: {}", startTime);
+        log.info("时长卡失效期: {}", endTime);
+        log.info("=====================");
     }
 
 

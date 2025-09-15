@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,6 +16,7 @@ import java.math.RoundingMode;
  * @author wangjiahao
  * @date 2025/9/13 22:13
  */
+@Slf4j
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +25,7 @@ import java.math.RoundingMode;
 public class CountCard extends BaseCard {
 
 
-    public CountCard(String orderAmount, String arrivalAmount, Integer totalCount, String reservePrecent) {
+    public CountCard(String orderAmount, String arrivalAmount, String reservePrecent, Integer totalCount) {
         // 卡的基本信息
         setOrderAmount(new BigDecimal(orderAmount));
         setArrivalAmount(new BigDecimal(arrivalAmount));
@@ -48,15 +50,15 @@ public class CountCard extends BaseCard {
 
     @Override
     public void printCardInfo() {
-        System.err.println("=====================");
-        System.err.println("次卡订单金额: " + getOrderAmount());
-        System.err.println("次卡实际到账金额:" + getArrivalAmount());
-        System.err.println("次卡监管比例:" + getReservePrecent());
-        System.err.println("次卡留底资金: " + getCardReserveAmount());
-        System.err.println("次卡可支用资金: " + getCardAvailableAmount());
-        System.err.println("次卡总次数:" + getTotalCount());
-        System.err.println("每次核销金额: " + getEachAmount());
-        System.err.println("=====================");
+        log.info("=====================");
+        log.info("次卡订单金额: {}", getOrderAmount());
+        log.info("次卡实际到账金额: {}", getArrivalAmount());
+        log.info("次卡监管比例: {}", getReservePrecent());
+        log.info("次卡留底资金: {}", getCardReserveAmount());
+        log.info("次卡可支用资金: {}", getCardAvailableAmount());
+        log.info("次卡总次数: {}", getTotalCount());
+        log.info("每次核销金额: {}", getEachAmount());
+        log.info("=====================");
     }
 
 }
