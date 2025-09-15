@@ -57,7 +57,7 @@ public class TimeCard extends BaseCard {
         setCumulativeTransferAmount(BigDecimal.ZERO);
         setCurrentReserveAmount(getCardReserveAmount());
         setCurrentAvailableAmount(getCardAvailableAmount());
-        setCurrentCount(0);
+        setRemainingCount(totalCount);
     }
 
     /**

@@ -35,11 +35,6 @@ import java.math.BigDecimal;
 public class ExpenseResponse {
 
     /**
-     * 当前核销次数
-     */
-    private Integer currentCount;
-
-    /**
      * 本次核销金额
      */
     private BigDecimal currentExpense;
@@ -58,5 +53,10 @@ public class ExpenseResponse {
      * 累计划拨金额
      */
     private BigDecimal cumulativeTransferAmount;
+
+    /**
+     * 剩余次数/天数
+     */
+    private Integer remainingCount;
 
 }

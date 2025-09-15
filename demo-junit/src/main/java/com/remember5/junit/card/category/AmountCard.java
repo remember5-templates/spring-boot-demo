@@ -49,8 +49,8 @@ public class AmountCard extends BaseCard {
         setCumulativeTransferAmount(BigDecimal.ZERO);
         setCurrentReserveAmount(getCardReserveAmount());
         setCurrentAvailableAmount(getCardAvailableAmount());
-        setCurrentCount(0);
-        setTotalCount(0);
+        setRemainingCount(1);
+        setTotalCount(1);
     }
 
     /**

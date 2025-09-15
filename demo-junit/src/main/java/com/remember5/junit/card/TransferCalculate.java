@@ -84,16 +84,15 @@ public class TransferCalculate {
 
         if (card.getCurrentReserveAmount() == null || card.getCardReserveAmount() == null ||
             card.getCardAvailableAmount() == null || card.getCumulativeTransferAmount() == null ||
-            card.getCurrentCount() == null || card.getTotalCount() == null) {
+            card.getRemainingCount() == null || card.getTotalCount() == null) {
             throw new IllegalArgumentException("卡片属性不能为null");
         }
 
-        if (card.getCurrentReserveAmount().compareTo(BigDecimal.ZERO) <= 0) {
+        if (BigDecimal.ZERO.compareTo(card.getCurrentReserveAmount()) >= 0) {
             throw new IllegalStateException("留底资金必须大于0");
         }
 
-        if (!(card instanceof AmountCard) &&
-                card.getCurrentCount().compareTo(card.getTotalCount()) >= 0) {
+        if (!(card instanceof AmountCard) &&  card.getRemainingCount() == 0) {
             throw new IllegalStateException("核销次数已达到上限");
         }
     }
@@ -104,10 +103,10 @@ public class TransferCalculate {
      */
     private static BigDecimal calculateTransfer(BaseCard card) {
         BigDecimal eachAmount = getEachAmount(card);
-        boolean isLastTransfer = card.getCurrentCount() + 1 == card.getTotalCount();
+        boolean isLastTransfer = card.getRemainingCount() - 1 == 0;
 
         // 增加核销次数
-        card.setCurrentCount(card.getCurrentCount() + 1);
+        card.setRemainingCount(card.getRemainingCount() - 1);
 
         // 判断当前处于哪个阶段
         if (isInAvailableStage(card)) {

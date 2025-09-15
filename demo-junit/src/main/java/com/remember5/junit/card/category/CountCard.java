@@ -39,14 +39,8 @@ public class CountCard extends BaseCard {
         setCumulativeTransferAmount(BigDecimal.ZERO);
         setCurrentReserveAmount(getCardReserveAmount());
         setCurrentAvailableAmount(getCardAvailableAmount());
-        setCurrentCount(0);
+        setRemainingCount(totalCount);
     }
-
-    /**
-     * 剩余次数
-     */
-    @Deprecated
-    private Integer remainingCount;
 
     @Override
     public void printCardInfo() {

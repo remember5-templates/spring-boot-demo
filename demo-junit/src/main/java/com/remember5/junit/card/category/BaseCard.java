@@ -81,9 +81,9 @@ public abstract class BaseCard {
     private BigDecimal eachAmount;
 
     /**
-     * 当前核销次数/天数
+     * 剩余核销次数/天数
      */
-    private Integer currentCount;
+    private Integer remainingCount;
 
     /**
      * 打印卡片信息的抽象方法，由子类实现具体逻辑
