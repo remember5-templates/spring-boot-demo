@@ -23,6 +23,7 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -39,10 +40,16 @@ import java.util.Date;
 @NoArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class TimeCard extends BaseCard {
+public class TimeCard extends BaseCard implements Serializable, Cloneable {
+
+    /**
+     * 本次消费次数
+     */
+    private Integer currentExpenseCount;
 
     public TimeCard(String orderAmount, String arrivalAmount, String reservePrecent, Integer totalCount, Date startTime) {
         // 卡的基本信息
+        setCardCategory(CardCategory.TIME);
         setOrderAmount(new BigDecimal(orderAmount));
         setArrivalAmount(new BigDecimal(arrivalAmount));
         setReservePrecent(new BigDecimal(reservePrecent));
@@ -58,6 +65,9 @@ public class TimeCard extends BaseCard {
         setCurrentReserveAmount(getCardReserveAmount());
         setCurrentAvailableAmount(getCardAvailableAmount());
         setRemainingCount(totalCount);
+        setTriggerReserverTransfer(false);
+
+        printCardInfo();
     }
 
     /**
@@ -86,5 +96,12 @@ public class TimeCard extends BaseCard {
         log.info("=====================");
     }
 
-
+    @Override
+    public TimeCard clone() {
+        try {
+            return (TimeCard) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Failed to clone CountCard", e);
+        }
+    }
 }

@@ -22,6 +22,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -35,10 +36,11 @@ import java.math.RoundingMode;
 @NoArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class AmountCard extends BaseCard {
+public class AmountCard extends BaseCard implements Serializable, Cloneable{
 
     public AmountCard(String orderAmount, String arrivalAmount, String reservePrecent) {
         // 卡的基本信息
+        setCardCategory(CardCategory.AMOUNT);
         setOrderAmount(new BigDecimal(orderAmount));
         setArrivalAmount(new BigDecimal(arrivalAmount));
         setReservePrecent(new BigDecimal(reservePrecent));
@@ -51,6 +53,9 @@ public class AmountCard extends BaseCard {
         setCurrentAvailableAmount(getCardAvailableAmount());
         setRemainingCount(1);
         setTotalCount(1);
+        setTriggerReserverTransfer(false);
+
+        printCardInfo();
     }
 
     /**
@@ -69,5 +74,13 @@ public class AmountCard extends BaseCard {
         log.info("=====================");
     }
 
+    @Override
+    public AmountCard clone() {
+        try {
+            return (AmountCard) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Failed to clone CountCard", e);
+        }
+    }
 
 }

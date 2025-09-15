@@ -34,6 +34,19 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ExpenseResponse {
 
+    public ExpenseResponse(Integer currentCount, BigDecimal currentExpense, BigDecimal currentTransferAmount, BigDecimal currentReserveAmount, BigDecimal cumulativeTransferAmount) {
+        this.currentCount = currentCount;
+        this.currentExpense = currentExpense;
+        this.currentTransferAmount = currentTransferAmount;
+        this.currentReserveAmount = currentReserveAmount;
+        this.cumulativeTransferAmount = cumulativeTransferAmount;
+    }
+
+    /**
+     * 当前核销次数
+     */
+    private Integer currentCount;
+
     /**
      * 本次核销金额
      */

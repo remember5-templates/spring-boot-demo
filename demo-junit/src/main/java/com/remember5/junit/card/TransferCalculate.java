@@ -1,38 +1,13 @@
-/**
- * Copyright [2022] [remember5]
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.remember5.junit.card;
 
-import com.remember5.junit.card.category.AmountCard;
-import com.remember5.junit.card.category.BaseCard;
-import com.remember5.junit.card.category.CountCard;
-import com.remember5.junit.card.category.TimeCard;
+import com.remember5.junit.card.category.*;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
  * 卡片划拨计算工具类
- * 优化版本：
- * 1. 消除代码重复
- * 2. 统一计算逻辑
- * 3. 提高代码可读性和维护性
- * 4. 改进错误处理和边界条件检查
- */
-
-/**
+ *
  * @author wangjiahao
  * @date 2025/9/14 14:40
  */
@@ -40,51 +15,44 @@ public class TransferCalculate {
 
     /**
      * 统一的卡片计算方法，支持所有继承自BaseCard的卡类型
+     *
      * @param card 卡片对象
-     * @return 本次划拨金额
+     * @return 实际划拨金额
      * @throws IllegalArgumentException 如果卡片对象无效
      */
-    public static BigDecimal calculate(BaseCard card) {
-        validateCard(card);
-        return calculateTransfer(card);
+    public static BigDecimal calculate(BaseCard card, Integer expenseCount) {
+        validateCard(card, expenseCount);
+        return calculateTransfer(card, expenseCount);
     }
-
-    /**
-     * 兼容性方法 - 次卡计算
-     * @deprecated 建议直接使用 calculate(BaseCard card) 方法
-     */
-    @Deprecated
-    public static BigDecimal countCard(CountCard card) {
-        return calculate(card);
-    }
-
-    /**
-     * 兼容性方法 - 时长卡计算
-     * @deprecated 建议直接使用 calculate(BaseCard card) 方法
-     */
-    @Deprecated
-    public static BigDecimal timeCard(TimeCard card) {
-        return calculate(card);
-    }
-
 
     /**
      * 金额卡计算
-     * 重构后使用统一的计算逻辑，消除代码重复
      */
     public static BigDecimal amountCard(AmountCard card) {
-        return calculate(card);
+        validateCard(card, 1);
+        // 预计划拨金额 = 单次划拨金额(eachAmount) * 核销次数(expenseCount)
+        BigDecimal planTransferAmount = getPlanTransferAmount(card, 1);
+        // 新的累计划拨
+        BigDecimal newCumulativeAmount = card.getCumulativeTransferAmount().add(planTransferAmount);
+
+        // 预计划拨为0的话,直接返回 异常,
+        if (BigDecimal.ZERO.compareTo(planTransferAmount) >= 0) {
+            throw new IllegalStateException("预计划拨金额需要大于0");
+        }
+
+        // 判断是否为最后一次 预计划拨金额 > 当前留底
+        boolean isLastTransfer = planTransferAmount.compareTo(card.getCurrentReserveAmount()) >= 0;
+
+        return getActualTransferAmount(card, isLastTransfer, newCumulativeAmount, planTransferAmount);
     }
 
     /**
      * 验证卡片对象的有效性
      */
-    private static void validateCard(BaseCard card) {
+    private static void validateCard(BaseCard card, Integer expenseCount) {
         Objects.requireNonNull(card, "卡片对象不能为null");
 
-        if (card.getCurrentReserveAmount() == null || card.getCardReserveAmount() == null ||
-            card.getCardAvailableAmount() == null || card.getCumulativeTransferAmount() == null ||
-            card.getRemainingCount() == null || card.getTotalCount() == null) {
+        if (card.getCurrentReserveAmount() == null || card.getCardReserveAmount() == null || card.getCardAvailableAmount() == null || card.getCumulativeTransferAmount() == null || card.getRemainingCount() == null || card.getTotalCount() == null) {
             throw new IllegalArgumentException("卡片属性不能为null");
         }
 
@@ -92,95 +60,87 @@ public class TransferCalculate {
             throw new IllegalStateException("留底资金必须大于0");
         }
 
-        if (!(card instanceof AmountCard) &&  card.getRemainingCount() == 0) {
-            throw new IllegalStateException("核销次数已达到上限");
+        // 非金额卡判断
+        if (card.getCardCategory() != CardCategory.AMOUNT) {
+            if (card.getRemainingCount() - expenseCount < 0) {
+                throw new IllegalStateException("本次核销次数不可以大于剩余权益数");
+            }
+
+            if (card.getRemainingCount() == 0) {
+                throw new IllegalStateException("核销次数已达到上限");
+            }
+
         }
+
     }
 
     /**
      * 统一的卡片划拨计算逻辑
      * 支持所有类型的BaseCard（次卡、时长卡等）
+     *
+     * @param card 卡对象
+     * @return 实际划拨金额
      */
-    private static BigDecimal calculateTransfer(BaseCard card) {
-        BigDecimal eachAmount = getEachAmount(card);
-        boolean isLastTransfer = card.getRemainingCount() - 1 == 0;
+    private static BigDecimal calculateTransfer(BaseCard card, Integer expenseCount) {
+        // 预计划拨金额 = 单次划拨金额(eachAmount) * 核销次数(expenseCount)
+        BigDecimal planTransferAmount = getPlanTransferAmount(card, expenseCount);
+        // 新的累计划拨
+        BigDecimal newCumulativeAmount = card.getCumulativeTransferAmount().add(planTransferAmount);
 
-        // 增加核销次数
-        card.setRemainingCount(card.getRemainingCount() - 1);
-
-        // 判断当前处于哪个阶段
-        if (isInAvailableStage(card)) {
-            return calculateAvailableStage(card, eachAmount);
-        } else {
-            return calculateReserveStage(card, eachAmount, isLastTransfer);
+        // 预计划拨为0的话,直接返回 异常,
+        if (BigDecimal.ZERO.compareTo(planTransferAmount) >= 0) {
+            throw new IllegalStateException("预计划拨金额需要大于0");
         }
+
+        // 判断是否为最后一次
+        boolean isLastTransfer = card.getRemainingCount() - expenseCount <= 0;
+        // 更新剩余核销次数
+        card.setRemainingCount(card.getRemainingCount() - expenseCount);
+
+        return getActualTransferAmount(card, isLastTransfer, newCumulativeAmount, planTransferAmount);
+
     }
 
-    /**
-     * 获取每次划拨金额
-     */
-    private static BigDecimal getEachAmount(BaseCard card) {
-        if (card instanceof AmountCard) {
-            return ((AmountCard) card).getCurrentExpenseAmount();
+    private static BigDecimal getActualTransferAmount(BaseCard card, boolean isLastTransfer, BigDecimal newCumulativeAmount, BigDecimal planTransferAmount) {
+        if (isLastTransfer) {
+            // 实际划拨金额 = 卡的实收 - 卡的已划拨
+            BigDecimal actualTransferAmount = card.getArrivalAmount().subtract(card.getCumulativeTransferAmount());
+
+            // 更新留底资金
+            card.setCurrentReserveAmount(BigDecimal.ZERO);
+            updateCumulativeAmount(card, actualTransferAmount);
+            return actualTransferAmount;
         }
-        return card.getEachAmount();
-    }
 
-    /**
-     * 判断是否在可支用阶段
-     */
-    private static boolean isInAvailableStage(BaseCard card) {
-        return card.getCardReserveAmount().compareTo(card.getCurrentReserveAmount()) == 0;
-    }
-
-    /**
-     * 计算可支用阶段的划拨金额
-     * 可支用阶段：留底资金未动用，优先使用可支用资金
-     */
-    private static BigDecimal calculateAvailableStage(BaseCard card, BigDecimal eachAmount) {
-        BigDecimal newCumulativeAmount = card.getCumulativeTransferAmount().add(eachAmount);
-
+        // 新的累计划拨资金 <= 卡的初始可支用
         if (newCumulativeAmount.compareTo(card.getCardAvailableAmount()) <= 0) {
-            // 可支用资金充足，直接从可支用资金划拨
-            updateCumulativeAmount(card, eachAmount);
-            return eachAmount;
+            // 可支用资金充足，不划拨
+            updateCumulativeAmount(card, planTransferAmount);
+            return BigDecimal.ZERO;
         } else {
             // 可支用资金不足，需要动用留底资金
-            BigDecimal transferAmount = newCumulativeAmount.subtract(card.getCardAvailableAmount());
+            BigDecimal actualTransferAmount = card.getTriggerReserverTransfer() ? planTransferAmount : newCumulativeAmount.subtract(card.getCardAvailableAmount());
+            card.setTriggerReserverTransfer(true);
             // 如果划拨金额大于卡的所有留底资金
-            if(transferAmount.compareTo(card.getCurrentReserveAmount()) >= 0) {
-                transferAmount = card.getCardReserveAmount();
-                eachAmount = card.getArrivalAmount().subtract(card.getCumulativeTransferAmount());
+            if (actualTransferAmount.compareTo(card.getCurrentReserveAmount()) >= 0) {
+                actualTransferAmount = card.getCardReserveAmount();
+                // 开启留底转账
+                card.setTriggerReserverTransfer(true);
             }
-            card.setCurrentReserveAmount(card.getCurrentReserveAmount().subtract(transferAmount));
-            updateCumulativeAmount(card, eachAmount);
-            return transferAmount;
+            card.setCurrentReserveAmount(card.getCurrentReserveAmount().subtract(actualTransferAmount));
+            updateCumulativeAmount(card, planTransferAmount);
+            return actualTransferAmount;
         }
     }
 
     /**
-     * 计算留底资金阶段的划拨金额
-     * 留底资金阶段：留底资金已经开始被使用
+     * 获取计划划拨金额
      */
-    private static BigDecimal calculateReserveStage(BaseCard card, BigDecimal eachAmount, boolean isLastTransfer) {
-        BigDecimal transferAmount;
-
-        if (isLastTransfer) {
-            // 最后一次，划拨所有剩余留底资金
-            transferAmount = card.getCurrentReserveAmount();
-            card.setCurrentReserveAmount(BigDecimal.ZERO);
-        } else if (card.getCurrentReserveAmount().compareTo(eachAmount) >= 0) {
-            // 留底资金充足，正常划拨
-            transferAmount = eachAmount;
-            card.setCurrentReserveAmount(card.getCurrentReserveAmount().subtract(eachAmount));
-        } else {
-            // 留底资金不足，划拨所有剩余留底资金
-            transferAmount = card.getCurrentReserveAmount();
-            card.setCurrentReserveAmount(BigDecimal.ZERO);
+    private static BigDecimal getPlanTransferAmount(BaseCard card, Integer expenseCount) {
+        if (card instanceof AmountCard amountCard) {
+            return amountCard.getCurrentExpenseAmount();
         }
-
-        updateCumulativeAmount(card, transferAmount);
-        return transferAmount;
+        return card.getEachAmount().multiply(new BigDecimal(expenseCount));
     }
 
     /**
@@ -189,6 +149,5 @@ public class TransferCalculate {
     private static void updateCumulativeAmount(BaseCard card, BigDecimal transferAmount) {
         card.setCumulativeTransferAmount(card.getCumulativeTransferAmount().add(transferAmount));
     }
-
 
 }

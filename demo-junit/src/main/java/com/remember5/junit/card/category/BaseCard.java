@@ -31,6 +31,11 @@ import java.math.BigDecimal;
 public abstract class BaseCard {
 
     /**
+     * 卡类型
+     */
+    private CardCategory cardCategory;
+
+    /**
      * 订单金额(元)
      */
     private BigDecimal orderAmount;
@@ -84,6 +89,11 @@ public abstract class BaseCard {
      * 剩余核销次数/天数
      */
     private Integer remainingCount;
+
+    /**
+     * 开启留底转账
+     */
+    private Boolean triggerReserverTransfer;
 
     /**
      * 打印卡片信息的抽象方法，由子类实现具体逻辑
