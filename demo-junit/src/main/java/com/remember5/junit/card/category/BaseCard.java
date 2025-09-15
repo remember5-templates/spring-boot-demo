@@ -36,7 +36,7 @@ public abstract class BaseCard {
     private BigDecimal orderAmount;
 
     /**
-     * 到账金额(元)
+     * 到账金额(元) 留底资金+可支用资金
      */
     private BigDecimal arrivalAmount;
 

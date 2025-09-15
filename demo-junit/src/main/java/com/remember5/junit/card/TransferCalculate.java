@@ -149,7 +149,7 @@ public class TransferCalculate {
             // 可支用资金不足，需要动用留底资金
             BigDecimal transferAmount = newCumulativeAmount.subtract(card.getCardAvailableAmount());
             // 如果划拨金额大于卡的所有留底资金
-            if(transferAmount.compareTo(card.getCardReserveAmount()) >= 0) {
+            if(transferAmount.compareTo(card.getCurrentReserveAmount()) >= 0) {
                 transferAmount = card.getCardReserveAmount();
                 eachAmount = card.getArrivalAmount().subtract(card.getCumulativeTransferAmount());
             }
