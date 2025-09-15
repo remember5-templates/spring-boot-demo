@@ -83,7 +83,7 @@ class TransferCalculateTest {
         final CountCard countCard = new CountCard("15", "14.97", "0.4", 9);
         // 1 * 9
         list.add(BatchTestCard.builder().card(countCard.clone())
-                .expenseAmount(Arrays.asList("1", "1", "1", "1", "1", "1", "1","1","1")).build());
+                .expenseAmount(Arrays.asList("1", "1", "1", "1", "1", "1", "1", "1", "1")).build());
         // 5,4
         list.add(BatchTestCard.builder().card(countCard.clone())
                 .expenseAmount(Arrays.asList("5", "4")).build());
@@ -92,13 +92,13 @@ class TransferCalculateTest {
                 .expenseAmount(Arrays.asList("6", "3")).build());
         // 8,1
         list.add(BatchTestCard.builder().card(countCard.clone())
-                .expenseAmount(Arrays.asList("8","1")).build());
+                .expenseAmount(Arrays.asList("8", "1")).build());
         // 9
         list.add(BatchTestCard.builder().card(countCard.clone())
                 .expenseAmount(Arrays.asList("9")).build());
         // 3,3,2,2
         list.add(BatchTestCard.builder().card(countCard.clone())
-                .expenseAmount(Arrays.asList("3", "3","2","2")).build());
+                .expenseAmount(Arrays.asList("3", "3", "2", "2")).build());
         // 0
         list.add(BatchTestCard.builder().card(countCard.clone())
                 .expenseAmount(Arrays.asList("0")).build());
@@ -192,7 +192,7 @@ class TransferCalculateTest {
 
                 for (String expenseAmount : item.getExpenseAmount()) {
                     card.setCurrentExpenseAmount(new BigDecimal(expenseAmount));
-                    BigDecimal transferAmount = TransferCalculate.amountCard(card);
+                    BigDecimal transferAmount = TransferCalculate.calculate(card, 1);
                     log.info("当前核销次数: {}, 本次核销金额: {} , 本次划拨金额: {}, 当前留底资金: {} , 累计划拨金额(含可支用): {}",
                             index, expenseAmount, transferAmount, card.getCurrentReserveAmount(), card.getCumulativeTransferAmount());
                     ++index;
@@ -219,11 +219,11 @@ class TransferCalculateTest {
                 .expenseAmount(Arrays.asList("3", "5.97", "4", "2.03")).build());
 
         list.add(BatchTestCard.builder().card(amountCard.clone())
-                .expenseAmount(Arrays.asList("1.67","8.93","1.11","15")).build());
+                .expenseAmount(Arrays.asList("1.67", "8.93", "1.11", "15")).build());
 
 
         list.add(BatchTestCard.builder().card(amountCard.clone())
-                .expenseAmount(Arrays.asList("1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11","1.11")).build());
+                .expenseAmount(Arrays.asList("1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11", "1.11")).build());
 
 
         for (BatchTestCard item : list) {
@@ -235,7 +235,7 @@ class TransferCalculateTest {
 
                 for (String expenseAmount : item.getExpenseAmount()) {
                     card.setCurrentExpenseAmount(new BigDecimal(expenseAmount));
-                    BigDecimal transferAmount = TransferCalculate.amountCard(card);
+                    BigDecimal transferAmount = TransferCalculate.calculate(card, 1);
                     log.info("当前核销次数: {}, 本次核销金额: {} , 本次划拨金额: {}, 当前留底资金: {} , 累计划拨金额(含可支用): {}",
                             index, expenseAmount, transferAmount, card.getCurrentReserveAmount(), card.getCumulativeTransferAmount());
                     ++index;
