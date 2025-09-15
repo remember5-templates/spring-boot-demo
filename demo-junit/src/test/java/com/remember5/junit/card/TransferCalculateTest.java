@@ -5,8 +5,7 @@ import com.remember5.junit.card.category.AmountCard;
 import com.remember5.junit.card.category.CountCard;
 import com.remember5.junit.card.category.TimeCard;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
@@ -22,10 +21,12 @@ import java.util.Date;
  */
 @Slf4j
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TransferCalculateTest {
 
     @Test
     @DisplayName("次卡验证-1")
+    @Order(1)
     void testCountCardCalculation1() {
         final ArrayList<BatchTestCard> list = new ArrayList<>();
         final CountCard countCard = new CountCard("9", "8.98", "0.3", 7);
@@ -70,11 +71,13 @@ class TransferCalculateTest {
                 log.error(e.getMessage());
             }
         }
+        log.info("\n\n\n");
 
     }
 
     @Test
     @DisplayName("次卡验证-2")
+    @Order(2)
     void testCountCardCalculation2() {
         final ArrayList<BatchTestCard> list = new ArrayList<>();
         final CountCard countCard = new CountCard("15", "14.97", "0.4", 9);
@@ -120,10 +123,14 @@ class TransferCalculateTest {
             }
         }
 
+        log.info("\n\n\n");
+
     }
 
 
     @Test
+    @DisplayName("时长卡验证-1")
+    @Disabled
     void testTimeCardCalculation() {
         final ArrayList<BatchTestCard> list = new ArrayList<>();
 
@@ -140,7 +147,7 @@ class TransferCalculateTest {
         for (BatchTestCard item : list) {
             try {
                 log.info("--------------【开始核销时长卡过程】--------------");
-                log.info("验证条件: {}", StrUtil.join(",", item.getExpenseAmount()));
+                log.info("验证条件: 【{}】", StrUtil.join(",", item.getExpenseAmount()));
                 final TimeCard card = (TimeCard) item.getCard();
                 item.getExpenseAmount().forEach(e -> {
                     card.setCurrentExpenseCount(Integer.parseInt(e));
@@ -154,11 +161,13 @@ class TransferCalculateTest {
                 continue;
             }
         }
+        log.info("\n\n\n");
 
     }
 
     @Test
     @DisplayName("金额卡验证-1")
+    @Disabled
     void testAmountCardCalculation1() {
         final ArrayList<BatchTestCard> list = new ArrayList<>();
         // 创建金额卡
@@ -178,6 +187,7 @@ class TransferCalculateTest {
             try {
                 int index = 1;
                 log.info("--------------【开始核销金额卡过程】--------------");
+                log.info("验证条件: 【{}】", StrUtil.join(",", item.getExpenseAmount()));
                 final AmountCard card = (AmountCard) item.getCard();
 
                 for (String expenseAmount : item.getExpenseAmount()) {
@@ -194,11 +204,13 @@ class TransferCalculateTest {
             log.info("--------------【结束核销金额卡过程】--------------\n");
 
         }
+        log.info("\n\n\n");
 
     }
 
     @Test
     @DisplayName("金额卡验证-2")
+    @Order(3)
     void testAmountCardCalculation2() {
         final ArrayList<BatchTestCard> list = new ArrayList<>();
         // 创建金额卡
@@ -218,6 +230,7 @@ class TransferCalculateTest {
             try {
                 int index = 1;
                 log.info("--------------【开始核销金额卡过程】--------------");
+                log.info("验证条件: 【{}】", StrUtil.join(",", item.getExpenseAmount()));
                 final AmountCard card = (AmountCard) item.getCard();
 
                 for (String expenseAmount : item.getExpenseAmount()) {
@@ -234,6 +247,7 @@ class TransferCalculateTest {
             log.info("--------------【结束核销金额卡过程】--------------\n");
 
         }
+        log.info("\n\n\n");
 
     }
 

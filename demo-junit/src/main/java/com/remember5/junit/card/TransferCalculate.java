@@ -40,8 +40,8 @@ public class TransferCalculate {
             throw new IllegalStateException("预计划拨金额需要大于0");
         }
 
-        // 判断是否为最后一次 预计划拨金额 > 当前留底
-        boolean isLastTransfer = planTransferAmount.compareTo(card.getCurrentReserveAmount()) >= 0;
+        // 判断是否为最后一次 此次划拨的总金额 > 订单实收金额
+        boolean isLastTransfer = newCumulativeAmount.compareTo(card.getArrivalAmount()) >= 0;
 
         return getActualTransferAmount(card, isLastTransfer, newCumulativeAmount, planTransferAmount);
     }
@@ -106,12 +106,16 @@ public class TransferCalculate {
             // 实际划拨金额 = 卡的实收 - 卡的已划拨
             BigDecimal actualTransferAmount = card.getArrivalAmount().subtract(card.getCumulativeTransferAmount());
 
+            // 实际划拨 > 留底当前,
             if(actualTransferAmount.compareTo(card.getCardReserveAmount()) >= 0) {
+                // 实际划拨 = 当前所有的留底
                 actualTransferAmount = card.getCardReserveAmount();
+                updateCumulativeAmount(card, card.getArrivalAmount().subtract(card.getCumulativeTransferAmount()));
+            } else {
+                updateCumulativeAmount(card, actualTransferAmount);
             }
             // 更新留底资金
             card.setCurrentReserveAmount(BigDecimal.ZERO);
-            updateCumulativeAmount(card, actualTransferAmount);
             return actualTransferAmount;
         }
 
