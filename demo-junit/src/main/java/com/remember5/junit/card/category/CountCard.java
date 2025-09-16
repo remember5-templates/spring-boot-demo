@@ -49,7 +49,6 @@ public class CountCard extends BaseCard implements Serializable, Cloneable {
         setRemainingCount(totalCount);
         setTriggerReserverTransfer(false);
 
-        printCardInfo();
     }
 
     @Override
