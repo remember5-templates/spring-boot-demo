@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  * 卡的基础属性
@@ -16,17 +18,23 @@ import java.math.BigDecimal;
 public abstract class BaseCard {
 
     /**
-     * 卡类型
+     * 金额O
      */
-    private CardCategory cardCategory;
+    public static final BigDecimal ZERO_AMOUNT = BigDecimal.ZERO.setScale(2, RoundingMode.DOWN);
+    /**
+     * 最小计算金额为0.01
+     */
+    public static final BigDecimal MIN_TRANSFER_AMOUNT = new BigDecimal("0.01");
+    public static final MathContext MATH_CONTEXT = new MathContext(2, RoundingMode.DOWN);
 
     /**
-     * 订单金额(元)
+     * 消费者支付金额
      */
-    private BigDecimal orderAmount;
+    private BigDecimal payAmount;
+
 
     /**
-     * 到账金额(元) 留底资金+可支用资金
+     * 商家到账金额(元) 留底资金+可支用资金
      */
     private BigDecimal arrivalAmount;
 
@@ -56,24 +64,9 @@ public abstract class BaseCard {
     private BigDecimal cardAvailableAmount;
 
     /**
-     * 累计划拨金额(元)
+     * 累计划拨金额(元) 包含可支用
      */
     private BigDecimal cumulativeTransferAmount;
-
-    /**
-     * 总次数/总天数
-     */
-    private Integer totalCount;
-
-    /**
-     * 每次的划拨金额(元)
-     */
-    private BigDecimal eachAmount;
-
-    /**
-     * 剩余核销次数/天数
-     */
-    private Integer remainingCount;
 
     /**
      * 开启留底转账

@@ -25,31 +25,31 @@ import java.util.Date;
 @NoArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class TimeCard extends BaseCard implements Serializable, Cloneable {
+public class TimeCard extends GeneralCard implements Serializable, Cloneable {
 
-    /**
-     * 本次消费次数
-     */
-    private Integer currentExpenseCount;
-
-    public TimeCard(String orderAmount, String arrivalAmount, String reservePrecent, Integer totalCount, Date startTime) {
+    public TimeCard(String payAmount, String arrivalAmount, String reservePrecent, Integer totalCount, Date startTime) {
         // 卡的基本信息
-        setCardCategory(CardCategory.TIME);
-        setOrderAmount(new BigDecimal(orderAmount));
-        setArrivalAmount(new BigDecimal(arrivalAmount));
-        setReservePrecent(new BigDecimal(reservePrecent));
+        setPayAmount(new BigDecimal(payAmount).setScale(2, RoundingMode.DOWN));
+        setArrivalAmount(new BigDecimal(arrivalAmount).setScale(2, RoundingMode.DOWN));
+        setReservePrecent(new BigDecimal(reservePrecent).setScale(2, RoundingMode.DOWN));
         setTotalCount(totalCount);
+        setRemainingCount(totalCount);
         setStartTime(startTime);
         setEndTime(DateUtils.addDays(startTime, totalCount));
 
         // 计算
-        setCardReserveAmount(getOrderAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.DOWN));
+        setCardReserveAmount(getArrivalAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.UP));
         setCardAvailableAmount(getArrivalAmount().subtract(getCardReserveAmount()));
-        setEachAmount(getOrderAmount().divide(new BigDecimal(getTotalCount()), 2, RoundingMode.DOWN));
-        setCumulativeTransferAmount(BigDecimal.ZERO);
+        setEachAmount(getArrivalAmount().divide(new BigDecimal(getTotalCount()), 2, RoundingMode.DOWN));
+
+        // 当前情况
         setCurrentReserveAmount(getCardReserveAmount());
         setCurrentAvailableAmount(getCardAvailableAmount());
-        setRemainingCount(totalCount);
+
+        // 累计情况
+        setCumulativeTransferAmount(BaseCard.ZERO_AMOUNT);
+
+        // 未动用留底
         setTriggerReserverTransfer(false);
 
     }
@@ -68,7 +68,6 @@ public class TimeCard extends BaseCard implements Serializable, Cloneable {
     @Override
     public void printCardInfo() {
         log.info("=====================");
-        log.info("时长卡订单金额: {}", getOrderAmount());
         log.info("时长卡实际到账金额: {}", getArrivalAmount());
         log.info("时长卡监管比例: {}", getReservePrecent());
         log.info("时长卡留底资金: {}", getCardReserveAmount());

@@ -16,6 +16,7 @@
 package com.remember5.junit.card;
 
 import com.remember5.junit.card.category.BaseCard;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -29,6 +30,7 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @Builder(toBuilder = true)
+@AllArgsConstructor
 public class BatchTestCard {
 
     private BaseCard card;
