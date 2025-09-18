@@ -17,6 +17,8 @@ import static com.remember5.junit.card.category.BaseCard.MIN_TRANSFER_AMOUNT;
  */
 public class AmountCardTransferCalculate {
 
+    private AmountCardTransferCalculate() {}
+
     /**
      * 验证卡片对象的有效性
      *

@@ -27,7 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @DisplayName("时长卡测试")
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TimeCardTests {
+class TimeCardTests {
 
     @Test
     @DisplayName("时长卡验证-1")

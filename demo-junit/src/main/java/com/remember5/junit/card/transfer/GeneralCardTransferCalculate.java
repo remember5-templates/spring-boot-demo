@@ -17,6 +17,8 @@ import static com.remember5.junit.card.category.BaseCard.MIN_TRANSFER_AMOUNT;
  */
 public class GeneralCardTransferCalculate {
 
+    private GeneralCardTransferCalculate() {}
+
     /**
      * 验证卡片对象的有效性
      *
@@ -115,6 +117,12 @@ public class GeneralCardTransferCalculate {
                 ? planTransferAmount :
                 newCumulativeAmount.subtract(card.getCardAvailableAmount());
         card.setTriggerReserverTransfer(true);
+
+        // 如果划拨金额 > 卡的所有留底资金时，
+        if (actualTransferAmount.compareTo(card.getCurrentReserveAmount()) >= 0) {
+            // 实际划拨金额 = 卡都当前所有留底资金
+            actualTransferAmount = card.getCardReserveAmount();
+        }
         // 更新累计划拨金额
         updateCumulativeAmount(card, planTransferAmount);
         // 更新当前留底

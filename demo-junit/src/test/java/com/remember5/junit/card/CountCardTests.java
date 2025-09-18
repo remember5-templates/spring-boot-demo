@@ -22,8 +22,8 @@ import java.util.List;
 class CountCardTests {
 
     BatchTestCard card1 = new BatchTestCard(
-            new CountCard("9", "8.98", "0.3", 7),
-            Arrays.asList("2,2,2,2,2", "4,6", "4,2,2,2"));
+            new CountCard("9", "8.98", "0.3", 1),
+            Arrays.asList("2, 2, 2, 1", "1,1,1,1,1,1,1", "4,2,2,2"));
 
     @Test
     @DisplayName("【次卡】正常核销场景")
