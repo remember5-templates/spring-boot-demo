@@ -1,4 +1,4 @@
-package com.remember5.junit.card.transfer;
+package com.remember5.junit.card.calculate;
 
 import com.remember5.junit.card.category.BaseCard;
 import com.remember5.junit.card.category.GeneralCard;
@@ -34,6 +34,11 @@ public class GeneralCardTransferCalculate {
                 card.getRemainingCount() == null || card.getTotalCount() == null) {
             throw new IllegalArgumentException("卡片属性不能为null");
         }
+
+        if(expenseCount <= 0) {
+            throw new IllegalStateException("核销次数必须大于0");
+        }
+
         if (BigDecimal.ZERO.compareTo(card.getCurrentReserveAmount()) >= 0) {
             throw new IllegalStateException("留底资金必须大于0");
         }

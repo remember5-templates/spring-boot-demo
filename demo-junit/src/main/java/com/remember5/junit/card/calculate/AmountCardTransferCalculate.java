@@ -1,4 +1,4 @@
-package com.remember5.junit.card.transfer;
+package com.remember5.junit.card.calculate;
 
 import com.remember5.junit.card.category.AmountCard;
 import com.remember5.junit.card.category.BaseCard;
@@ -181,7 +181,7 @@ public class AmountCardTransferCalculate {
     private static BigDecimal getPlanTransferAmount(AmountCard amountCard) {
         // 预计划拨金额 = 本次消费金额 * 划拨计算比例
         BigDecimal planTransferAmount = amountCard.getCurrentExpenseAmount()
-                .multiply(amountCard.getTransferRatio());
+                .multiply(amountCard.getArrivalAmount().divide(amountCard.getEquityAmount()));
 
         // 预计划拨金额小于0.01时,预计划拨为0
         if (planTransferAmount.compareTo(MIN_TRANSFER_AMOUNT) < 0) {

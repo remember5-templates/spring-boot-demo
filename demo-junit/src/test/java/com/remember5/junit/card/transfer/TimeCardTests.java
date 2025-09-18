@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.remember5.junit.card;
+package com.remember5.junit.card.transfer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;

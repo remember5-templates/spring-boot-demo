@@ -56,7 +56,7 @@ public class AmountCard extends BaseCard implements Serializable, Cloneable {
         setCardReserveAmount(getArrivalAmount().multiply(getReservePrecent()).setScale(2, RoundingMode.UP));
         setCardAvailableAmount(getArrivalAmount().subtract(getCardReserveAmount()));
         // 计算划拨系数
-        setTransferRatio(getArrivalAmount().divide(getEquityAmount(), 2, RoundingMode.DOWN));
+        setTransferRatio(getArrivalAmount().divide(getEquityAmount(), 10, RoundingMode.DOWN));
 
         // 当前情况
         setCurrentReserveAmount(getCardReserveAmount());
