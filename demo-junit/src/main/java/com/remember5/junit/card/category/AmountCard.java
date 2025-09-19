@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
+ * 金额卡
+ *
  * @author wangjiahao
  * @date 2025/9/14 01:04
  */
@@ -22,7 +24,6 @@ import java.math.RoundingMode;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class AmountCard extends BaseCard implements Serializable, Cloneable {
-
 
 
     /**

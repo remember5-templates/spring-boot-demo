@@ -32,6 +32,15 @@ public abstract class BaseCard {
      */
     private BigDecimal payAmount;
 
+    /**
+     * 消费者支付金额
+     */
+    private BigDecimal consumerPayAmount;
+
+    /**
+     * 优惠金额
+     */
+    private BigDecimal salePayAmount;
 
     /**
      * 商家到账金额(元) 留底资金+可支用资金
