@@ -48,10 +48,6 @@ public class TimeCard extends GeneralCard implements Serializable, Cloneable {
 
         // 累计情况
         setCumulativeTransferAmount(BaseCard.ZERO_AMOUNT);
-
-        // 未动用留底
-        setTriggerReserverTransfer(false);
-
     }
 
     /**

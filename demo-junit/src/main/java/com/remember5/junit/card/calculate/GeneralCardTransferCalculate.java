@@ -17,7 +17,8 @@ import static com.remember5.junit.card.category.BaseCard.MIN_TRANSFER_AMOUNT;
  */
 public class GeneralCardTransferCalculate {
 
-    private GeneralCardTransferCalculate() {}
+    private GeneralCardTransferCalculate() {
+    }
 
     /**
      * 验证卡片对象的有效性
@@ -35,7 +36,7 @@ public class GeneralCardTransferCalculate {
             throw new IllegalArgumentException("卡片属性不能为null");
         }
 
-        if(expenseCount <= 0) {
+        if (expenseCount <= 0) {
             throw new IllegalStateException("核销次数必须大于0");
         }
 
@@ -55,7 +56,7 @@ public class GeneralCardTransferCalculate {
     /**
      * 统一的卡片计算方法，支持所有继承自BaseCard的卡类型
      *
-     * @param card    次卡
+     * @param card         次卡
      * @param expenseCount 消费次数
      * @return 实际划拨金额
      * @throws IllegalArgumentException 卡存在异常
@@ -117,13 +118,17 @@ public class GeneralCardTransferCalculate {
      * @return 实际划拨金额
      */
     private static BigDecimal realTransfer(GeneralCard card, BigDecimal newCumulativeAmount, BigDecimal planTransferAmount) {
-        // 新的累计划拨资金 <= 卡的总可支用
-        BigDecimal actualTransferAmount = Boolean.TRUE.equals(card.getTriggerReserverTransfer())
-                ? planTransferAmount :
-                newCumulativeAmount.subtract(card.getCardAvailableAmount());
-        card.setTriggerReserverTransfer(true);
-
-        // 如果划拨金额 > 卡的所有留底资金时，
+        BigDecimal actualTransferAmount;
+        // 【第一次核销触发留底】累计划拨=计划划拨金额 ||
+        // 【第一次进入留底】新的累计划拨资金 == (卡的可支用 + 本次核销) 时,
+        if(newCumulativeAmount.compareTo(planTransferAmount) == 0 ||
+                card.getCardAvailableAmount().add(planTransferAmount).compareTo(newCumulativeAmount) == 0) {
+            actualTransferAmount = newCumulativeAmount.subtract(card.getCardAvailableAmount());
+        } else {
+            // 【第n次进入留底】
+            actualTransferAmount = planTransferAmount;
+        }
+        // 划拨金额 > 卡的所有留底资金时，
         if (actualTransferAmount.compareTo(card.getCurrentReserveAmount()) >= 0) {
             // 实际划拨金额 = 卡都当前所有留底资金
             actualTransferAmount = card.getCardReserveAmount();

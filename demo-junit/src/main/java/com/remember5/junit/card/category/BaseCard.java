@@ -28,7 +28,12 @@ public abstract class BaseCard {
     public static final MathContext MATH_CONTEXT = new MathContext(2, RoundingMode.DOWN);
 
     /**
-     * 消费者支付金额
+     * 订单金额
+     */
+    private BigDecimal orderAmount;
+
+    /**
+     * 支付金额
      */
     private BigDecimal payAmount;
 
@@ -76,11 +81,6 @@ public abstract class BaseCard {
      * 累计划拨金额(元) 包含可支用
      */
     private BigDecimal cumulativeTransferAmount;
-
-    /**
-     * 开启留底转账
-     */
-    private Boolean triggerReserverTransfer;
 
     /**
      * 打印卡片信息的抽象方法，由子类实现具体逻辑

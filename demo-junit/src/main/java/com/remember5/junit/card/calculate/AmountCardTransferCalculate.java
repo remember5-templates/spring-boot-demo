@@ -123,12 +123,16 @@ public class AmountCardTransferCalculate {
      * @return 实际划拨金额
      */
     private static BigDecimal realTransfer(AmountCard amountCard, BigDecimal newCumulativeAmount, BigDecimal planTransferAmount) {
-        // 新的累计划拨资金 <= 卡的总可支用
-        BigDecimal actualTransferAmount = Boolean.TRUE.equals(amountCard.getTriggerReserverTransfer())
-                ? planTransferAmount :
-                newCumulativeAmount.subtract(amountCard.getCardAvailableAmount());
-        amountCard.setTriggerReserverTransfer(true);
-
+        BigDecimal actualTransferAmount;
+        // 【第一次核销触发留底】累计划拨=计划划拨金额 ||
+        // 【第一次进入留底】新的累计划拨资金 == (卡的可支用 + 本次核销) 时,
+        if(newCumulativeAmount.compareTo(planTransferAmount) == 0 ||
+                amountCard.getCardAvailableAmount().add(planTransferAmount).compareTo(newCumulativeAmount) == 0) {
+            actualTransferAmount = newCumulativeAmount.subtract(amountCard.getCardAvailableAmount());
+        } else {
+            // 【第n次进入留底】
+            actualTransferAmount = planTransferAmount;
+        }
         // 如果计划划拨金额 < 0.01(最小划拨金额), 只做权益记录，不做划拨
         if (actualTransferAmount.compareTo(MIN_TRANSFER_AMOUNT) < 0) {
             updateCumulativeUsedEquityAmount(amountCard, amountCard.getCurrentExpenseAmount());
