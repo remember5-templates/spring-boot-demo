@@ -127,7 +127,7 @@ public class AmountCardTransferCalculate {
         // 【第一次核销触发留底】累计划拨=计划划拨金额 ||
         // 【第一次进入留底】新的累计划拨资金 == (卡的可支用 + 本次核销) 时,
         if(newCumulativeAmount.compareTo(planTransferAmount) == 0 ||
-                amountCard.getCardAvailableAmount().add(planTransferAmount).compareTo(newCumulativeAmount) == 0) {
+                newCumulativeAmount.compareTo(amountCard.getCardAvailableAmount().add(planTransferAmount)) <= 0) {
             actualTransferAmount = newCumulativeAmount.subtract(amountCard.getCardAvailableAmount());
         } else {
             // 【第n次进入留底】
