@@ -32,17 +32,17 @@ public class AmountCard extends BaseCard implements Serializable, Cloneable {
     private BigDecimal equityAmount;
 
     /**
-     * 本次消费金额
+     * 本次消费金额(消费的是权益)
      */
     private BigDecimal currentExpenseAmount;
 
     /**
-     * 累计使用权益金额
+     * 累计使用权益金额(消费的是权益)
      */
     private BigDecimal cumulativeUsedEquityAmount;
 
     /**
-     * 划拨计算比例 = 卡的订单金额 / 卡的权益金额
+     * 划拨计算比例 = 卡的到账金额 / 卡的权益金额
      */
     private BigDecimal transferRatio;
 

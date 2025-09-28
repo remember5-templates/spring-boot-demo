@@ -125,7 +125,7 @@ public class AmountCardTransferCalculate {
     private static BigDecimal realTransfer(AmountCard amountCard, BigDecimal newCumulativeAmount, BigDecimal planTransferAmount) {
         BigDecimal actualTransferAmount;
         // 【第一次核销触发留底】累计划拨=计划划拨金额 ||
-        // 【第一次进入留底】新的累计划拨资金 == (卡的可支用 + 本次核销) 时,
+        // 【首次触发留底】新的累计划拨资金 == (卡的可支用 + 本次核销) 时,
         if(newCumulativeAmount.compareTo(planTransferAmount) == 0 ||
                 newCumulativeAmount.compareTo(amountCard.getCardAvailableAmount().add(planTransferAmount)) <= 0) {
             actualTransferAmount = newCumulativeAmount.subtract(amountCard.getCardAvailableAmount());

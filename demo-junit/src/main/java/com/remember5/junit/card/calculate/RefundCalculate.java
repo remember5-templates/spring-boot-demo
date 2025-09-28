@@ -32,8 +32,8 @@ public class RefundCalculate {
 
 
     /**
-     * 消费者-次卡退款
-     * 消费者退款金额 = 消费者支付金额 * 剩余权益数 / 总权益数 (避免两次精度取舍)
+     * 次卡退款金额
+     * <p>退款金额 = 订单金额 * 剩余权益数 / 总权益数 (避免两次精度取舍)</p>
      *
      * @param countCard 卡
      * @return 预计退款金额
@@ -42,13 +42,14 @@ public class RefundCalculate {
         if (countCard.getRemainingCount() <= 0) {
             throw new IllegalArgumentException("订单已使用完成");
         }
-        final BigDecimal remainingCount = new BigDecimal(countCard.getRemainingCount());
         final BigDecimal totalCount = new BigDecimal(countCard.getTotalCount());
-        return countCard.getPayAmount().multiply(remainingCount).divide(totalCount,2, RoundingMode.DOWN);
+        final BigDecimal remainingCount = new BigDecimal(countCard.getRemainingCount());
+        return countCard.getOrderAmount().multiply(remainingCount).divide(totalCount, 2, RoundingMode.DOWN);
     }
 
     /**
      * 时长卡退款
+     * <p>退款金额 = 订单金额 * 剩余权益数 / 总权益数 (避免两次精度取舍)</p>
      *
      * @param timeCard 卡
      * @return 预计退款金额
@@ -57,13 +58,15 @@ public class RefundCalculate {
         if (timeCard.getRemainingCount() <= 0) {
             throw new IllegalArgumentException("订单已使用完成");
         }
-        // todo 其他日期的判断
-        final BigDecimal refundRatio = new BigDecimal(timeCard.getRemainingCount()).divide(new BigDecimal(timeCard.getTotalCount()));
-        return timeCard.getPayAmount().multiply(refundRatio).setScale(2, RoundingMode.DOWN);
+        final BigDecimal totalCount = new BigDecimal(timeCard.getTotalCount());
+        final BigDecimal remainingCount = new BigDecimal(timeCard.getRemainingCount());
+        return timeCard.getOrderAmount().multiply(remainingCount).divide(totalCount, 2, RoundingMode.DOWN);
     }
 
     /**
      * 金额卡退款
+     * <p>退款金额 = 订单金额 * 剩余权益比例</p>
+     * <p>退款金额 = 订单金额 * ( (总权益 - 累计使用权益)/ 总权益 )</p>
      *
      * @param amountCard 卡
      * @return 预计退款金额
@@ -72,11 +75,10 @@ public class RefundCalculate {
         if (amountCard.getCumulativeUsedEquityAmount().compareTo(amountCard.getEquityAmount()) == 0) {
             throw new IllegalArgumentException("订单已使用完成,无法退款");
         }
-        //  支付金额 * 剩余权益比例
-        // 支付金额 * ( (总权益 - 累计使用权益)/ 总权益 )
+        final BigDecimal orderAmount = amountCard.getOrderAmount();
         final BigDecimal equityAmount = amountCard.getEquityAmount();
         final BigDecimal cumulativeUsedEquityAmount = amountCard.getCumulativeUsedEquityAmount();
         final BigDecimal ratio = equityAmount.subtract(cumulativeUsedEquityAmount).divide(equityAmount);
-        return amountCard.getPayAmount().multiply(ratio).setScale(2, RoundingMode.DOWN);
+        return orderAmount.multiply(ratio).setScale(2, RoundingMode.DOWN);
     }
 }
