@@ -66,7 +66,7 @@ public class RefundCalculate {
     /**
      * 金额卡退款
      * <p>退款金额 = 订单金额 * 剩余权益比例</p>
-     * <p>退款金额 = 订单金额 * ( (总权益 - 累计使用权益)/ 总权益 )</p>
+     * <p>退款金额 = 订单金额 * (总权益 - 累计使用权益) / 总权益 )</p>
      *
      * @param amountCard 卡
      * @return 预计退款金额
@@ -78,7 +78,7 @@ public class RefundCalculate {
         final BigDecimal orderAmount = amountCard.getOrderAmount();
         final BigDecimal equityAmount = amountCard.getEquityAmount();
         final BigDecimal cumulativeUsedEquityAmount = amountCard.getCumulativeUsedEquityAmount();
-        final BigDecimal ratio = equityAmount.subtract(cumulativeUsedEquityAmount).divide(equityAmount);
-        return orderAmount.multiply(ratio).setScale(2, RoundingMode.DOWN);
+        final BigDecimal ratio = equityAmount.subtract(cumulativeUsedEquityAmount);
+        return orderAmount.multiply(ratio).divide(equityAmount, 2, RoundingMode.DOWN);
     }
 }
