@@ -68,7 +68,7 @@ public abstract class BaseCard {
     private BigDecimal currentAvailableAmount;
 
     /**
-     * 预付卡留底资金(元), 订单金额(orderAmount) * 监管比例(reservePrecent) 保留两位小数，计算方式=舍弃法
+     * 预付卡留底资金(元), 到账金额(orderAmount) * 监管比例(reservePrecent) 保留两位小数，计算方式=舍弃法
      */
     private BigDecimal cardReserveAmount;
 

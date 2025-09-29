@@ -1,9 +1,8 @@
 package com.remember5.junit.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -21,5 +20,17 @@ public class TestController {
         mv.setViewName("pdf_export_employee_kpi");
         return mv;
     }
+
+    @PostMapping("a")
+    public String post(HttpServletRequest request, @RequestBody String jsonObject){
+        log.info("{}");
+
+        request.getParameterMap().forEach((key, value) -> {
+            log.info("{} = {}", key, value);
+        });
+
+        return "";
+    }
+
 
 }
