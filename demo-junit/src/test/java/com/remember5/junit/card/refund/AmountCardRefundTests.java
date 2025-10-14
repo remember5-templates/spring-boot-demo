@@ -1,9 +1,9 @@
 package com.remember5.junit.card.refund;
 
 import com.remember5.junit.card.BatchTestCard;
-import com.remember5.junit.card.calculate.RefundCalculate;
-import com.remember5.junit.card.category.AmountCard;
 import com.remember5.junit.card.calculate.AmountCardTransferCalculate;
+import com.remember5.junit.card.calculate.ConsumerRefundCalculate;
+import com.remember5.junit.card.category.AmountCard;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +49,7 @@ class AmountCardRefundTests {
                             i + 1, currentExpenseAmount, transferAmount, card.getCurrentReserveAmount(), card.getCumulativeTransferAmount(), card.getCumulativeUsedEquityAmount());
                 }
                 // 退款
-                final BigDecimal refundAmount = RefundCalculate.amountCard(card);
+                final BigDecimal refundAmount = ConsumerRefundCalculate.amountCard(card);
                 log.info("退款金额: {}", refundAmount);
 
             } catch (Exception exception) {

@@ -232,5 +232,18 @@ class AmountCardTests {
         test("其他场景10", testCard);
     }
 
+    @Test
+    @DisplayName("其他场景11")
+    @Order(11)
+    void test11() {
+        BatchTestCard testCard = new BatchTestCard(
+                new AmountCard("1","1","0.7","3"),
+                Arrays.asList(
+                        "1,2",
+                        "3"
+                ));
+        test("其他场景11", testCard);
+    }
+
 
 }

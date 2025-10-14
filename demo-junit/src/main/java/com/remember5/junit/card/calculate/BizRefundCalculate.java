@@ -20,20 +20,18 @@ import com.remember5.junit.card.category.CountCard;
 import com.remember5.junit.card.category.TimeCard;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
- * 退款计算
+ * 商家退款计算
  *
  * @author wangjiahao
  * @date 2025/9/16 15:44
  */
-public class RefundCalculate {
+public class BizRefundCalculate {
 
 
     /**
-     * 次卡退款金额
-     * <p>退款金额 = 订单金额 * 剩余权益数 / 总权益数 (避免两次精度取舍)</p>
+     * 商家-次卡退款
      *
      * @param countCard 卡
      * @return 预计退款金额
@@ -42,14 +40,16 @@ public class RefundCalculate {
         if (countCard.getRemainingCount() <= 0) {
             throw new IllegalArgumentException("订单已使用完成");
         }
-        final BigDecimal totalCount = new BigDecimal(countCard.getTotalCount());
-        final BigDecimal remainingCount = new BigDecimal(countCard.getRemainingCount());
-        return countCard.getOrderAmount().multiply(remainingCount).divide(totalCount, 2, RoundingMode.DOWN);
+
+        // 卡的可支用 >= 卡的累计划拨
+        if (countCard.getCardAvailableAmount().compareTo(countCard.getCumulativeTransferAmount()) > 0) {
+            return countCard.getCardReserveAmount();
+        }
+        return countCard.getArrivalAmount().subtract(countCard.getCumulativeTransferAmount());
     }
 
     /**
-     * 时长卡退款
-     * <p>退款金额 = 订单金额 * 剩余权益数 / 总权益数 (避免两次精度取舍)</p>
+     * 商家-时长卡退款
      *
      * @param timeCard 卡
      * @return 预计退款金额
@@ -58,15 +58,18 @@ public class RefundCalculate {
         if (timeCard.getRemainingCount() <= 0) {
             throw new IllegalArgumentException("订单已使用完成");
         }
-        final BigDecimal totalCount = new BigDecimal(timeCard.getTotalCount());
-        final BigDecimal remainingCount = new BigDecimal(timeCard.getRemainingCount());
-        return timeCard.getOrderAmount().multiply(remainingCount).divide(totalCount, 2, RoundingMode.DOWN);
+
+        // todo 其他日期的判断
+
+        // 卡的可支用 >= 卡的累计划拨
+        if (timeCard.getCardAvailableAmount().compareTo(timeCard.getCumulativeTransferAmount()) > 0) {
+            return timeCard.getCardReserveAmount();
+        }
+        return timeCard.getArrivalAmount().subtract(timeCard.getCumulativeTransferAmount());
     }
 
     /**
-     * 金额卡退款
-     * <p>退款金额 = 订单金额 * 剩余权益比例</p>
-     * <p>退款金额 = 订单金额 * (总权益 - 累计使用权益) / 总权益 )</p>
+     * 商家-金额卡退款
      *
      * @param amountCard 卡
      * @return 预计退款金额
@@ -75,10 +78,11 @@ public class RefundCalculate {
         if (amountCard.getCumulativeUsedEquityAmount().compareTo(amountCard.getEquityAmount()) == 0) {
             throw new IllegalArgumentException("订单已使用完成,无法退款");
         }
-        final BigDecimal orderAmount = amountCard.getOrderAmount();
-        final BigDecimal equityAmount = amountCard.getEquityAmount();
-        final BigDecimal cumulativeUsedEquityAmount = amountCard.getCumulativeUsedEquityAmount();
-        final BigDecimal ratio = equityAmount.subtract(cumulativeUsedEquityAmount);
-        return orderAmount.multiply(ratio).divide(equityAmount, 2, RoundingMode.DOWN);
+
+        // 卡的可支用 >= 卡的累计划拨
+        if (amountCard.getCardAvailableAmount().compareTo(amountCard.getCumulativeTransferAmount()) > 0) {
+            return amountCard.getCardReserveAmount();
+        }
+        return amountCard.getArrivalAmount().subtract(amountCard.getCumulativeTransferAmount());
     }
 }

@@ -46,6 +46,13 @@ public class AmountCard extends BaseCard implements Serializable, Cloneable {
      */
     private BigDecimal transferRatio;
 
+    /**
+     *
+     * @param payAmount 支付金额
+     * @param arrivalAmount 到账金额
+     * @param reservePrecent 监管比例
+     * @param equityAmount 权益金额
+     */
     public AmountCard(String payAmount, String arrivalAmount, String reservePrecent, String equityAmount) {
         // 卡的基本信息
         setPayAmount(new BigDecimal(payAmount).setScale(2, RoundingMode.DOWN));
