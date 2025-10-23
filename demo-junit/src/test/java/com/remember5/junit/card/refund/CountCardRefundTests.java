@@ -1,7 +1,7 @@
 package com.remember5.junit.card.refund;
 
 import com.remember5.junit.card.BatchTestCard;
-import com.remember5.junit.card.calculate.ConsumerRefundCalculate;
+import com.remember5.junit.card.calculate.RefundCalculate;
 import com.remember5.junit.card.calculate.GeneralCardTransferCalculate;
 import com.remember5.junit.card.category.CountCard;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ class CountCardRefundTests {
                             split[i], card.getEachAmount().multiply(new BigDecimal(split[i])), transferAmount, card.getCurrentReserveAmount(), card.getCumulativeTransferAmount(), card.getRemainingCount());
                 }
                 // 退款
-                final BigDecimal refundAmount = ConsumerRefundCalculate.countCard(card);
+                final BigDecimal refundAmount = RefundCalculate.Consumer.countCard(card);
                 log.info("退款金额: {}", refundAmount);
             } catch (Exception exception) {
                 log.info(exception.getMessage());
