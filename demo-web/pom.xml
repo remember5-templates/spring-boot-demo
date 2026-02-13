@@ -31,7 +31,7 @@
 				<dependency>
 					<groupId>io.minio</groupId>
 					<artifactId>minio</artifactId>
-					<version>8.4.5</version>
+					<version>8.6.0</version>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -42,7 +42,7 @@
 				<dependency>
 					<groupId>io.minio</groupId>
 					<artifactId>minio</artifactId>
-					<version>8.4.3</version>
+					<version>8.6.0</version>
 				</dependency>
 			</dependencies>
 		</profile>
